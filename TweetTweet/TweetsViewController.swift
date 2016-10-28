@@ -10,7 +10,7 @@ import UIKit
 
 class TweetsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    let twitterLogo = UIImageView.init(image: #imageLiteral(resourceName: "Twitter_Logo_Blue"))
+    var titleView = UIImageView(frame:CGRect(x: 0, y: 0, width: 40, height: 35))
     var tweets: [Tweet?]?
     
     @IBOutlet weak var tableView: UITableView!
@@ -19,21 +19,44 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refreshControlAction(_:)), for: UIControlEvents.valueChanged)
+        tableView.insertSubview(refreshControl, at: 0)
+        
+        
         tableView.delegate = self
         tableView.dataSource = self
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 120
         self.tableView.reloadData()
-
         
-        //self.navigationItem.titleView = twitterLogo;
-        self.navigationController?.navigationItem.titleView = twitterLogo;
+        titleView.contentMode = .scaleAspectFit
+        titleView.image = UIImage(named: "Twitter_Logo_Blue")
+
+        self.navigationItem.titleView = titleView;
         self.navigationController?.navigationBar.sizeToFit()
         
         TwitterClient.sharedInstance.homeTimeline(params: nil) { (tweets, error) in
             self.tweets = tweets
             self.tableView.reloadData()
             //tableview did load 
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let cell = sender as! TimelineTweetCell
+        let indexPath = tableView.indexPath(for: cell)
+        let tweet = tweets![(indexPath! as NSIndexPath).row]
+        
+        let detailViewController = segue.destination as! DetailViewController
+        detailViewController.tweet = tweet
+    }
+    
+    func refreshControlAction(_ refreshControl: UIRefreshControl) {
+        TwitterClient.sharedInstance.homeTimeline(params: nil) { (tweets, error) in
+            self.tweets = tweets
+            self.tableView.reloadData()
+            refreshControl.endRefreshing()
         }
     }
     
@@ -45,6 +68,28 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
             cell.handleLabel.text = "@\(tweet.user!.screenname!)"
             cell.tweetTextLabel.text = tweet.text!
             cell.timeLabel.text = "34m"
+            cell.tweet = tweet
+            
+            if let retweet = tweet.retweetedByHandleString {
+                cell.retweetHandleLabel.text = "\(retweet) Retweeted"
+                cell.retweetImage.image = UIImage(named: "retweetActionOn")
+            } else {
+                cell.retweetHandleLabel.text = "No Retweeted"
+                cell.retweetImage.image = UIImage(named: "retweetAction")
+            }
+            
+            if tweet.retweeted == true {
+                setButtonImage(button: cell.retweetActionButton, imageName: "retweetActionOn")
+            } else {
+                setButtonImage(button: cell.retweetActionButton, imageName: "retweetAction")
+            }
+            
+            if tweet.favorited == true {
+                setButtonImage(button: cell.favoriteActionButton, imageName: "favoriteActionOn")
+            } else {
+                setButtonImage(button: cell.favoriteActionButton, imageName: "favoriteAction")
+            }
+            
             //cell.timeLabel.text = tweet.createdAtString!
             
             let url = URL(string: "\(tweet.user!.profileImageUrl!)")
@@ -55,6 +100,10 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tweets?.count ?? 0
+    }
+    
+    func setButtonImage(button: UIButton!, imageName: String!) {
+        button.setBackgroundImage(UIImage(named: imageName), for: UIControlState.normal)
     }
 
     @IBAction func onLogout(_ sender: AnyObject) {

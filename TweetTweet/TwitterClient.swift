@@ -36,12 +36,52 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
         })
     }
     
+    func favoriteAction(endpoint: String?, tweet: Tweet?, completion: @escaping (_ dictionary: NSDictionary?, _ error: Error?) -> ()){
+        let keys = ["id"]
+        let params = NSDictionary.init(objects: [tweet!.id!], forKeys: keys as [NSCopying])
+        
+        post("1.1/favorites/\(endpoint!).json", parameters: params, success: { (operation, response) in
+            completion((response as! NSDictionary), nil)
+        }, failure: { (operation, error) in
+            print("ERROR favoriting tweet: \(error.localizedDescription)")
+            completion(nil, error)
+        })
+    }
+    
+    func favoriteTweet(tweet: Tweet?, completion: @escaping (_ dictionary: NSDictionary?, _ error: Error?) -> ()){
+        favoriteAction(endpoint: "create", tweet: tweet, completion: completion)
+    }
+    
+    func unfavoriteTweet(tweet: Tweet?, completion: @escaping (_ dictionary: NSDictionary?, _ error: Error?) -> ()){
+        favoriteAction(endpoint: "destroy", tweet: tweet, completion: completion)
+    }
+    
+    func retweetAction(endpoint: String?, tweet: Tweet?, completion: @escaping (_ dictionary: NSDictionary?, _ error: Error?) -> ()){
+        let keys = ["id", "id_str", "trim_user"]
+        let params = NSDictionary.init(objects: [tweet!.id, tweet!.id_str, false], forKeys: keys as [NSCopying])
+        
+        post("1.1/statuses/\(endpoint!)/\(params.value(forKey: "id_str") as! String).json", parameters: params, success: { (operation, response) in
+            completion((response as! NSDictionary), nil)
+            }, failure: { (operation, error) in
+                print("ERROR retweeting tweet: \(error.localizedDescription)")
+                completion(nil, error)
+        })
+    }
+    
+    func retweetTweet(tweet: Tweet?, completion: @escaping (_ tweet: NSDictionary?, _ error: Error?) -> ()){
+        retweetAction(endpoint: "retweet", tweet: tweet, completion: completion)
+    }
+    
+    func unretweetTweet(tweet: Tweet?, completion: @escaping (_ tweet: NSDictionary?, _ error: Error?) -> ()){
+        retweetAction(endpoint: "unretweet", tweet: tweet, completion: completion)
+    }
+    
     func loginWithCompletion(completion: @escaping (_ user: User?, _ error: Error?) -> ()) {
         loginCompletion = completion
 
         // Fetch request token & redirect to authorization page
-        TwitterClient.sharedInstance.requestSerializer.removeAccessToken()
-        TwitterClient.sharedInstance.fetchRequestToken(withPath: "oauth/request_token",
+        requestSerializer.removeAccessToken()
+        fetchRequestToken(withPath: "oauth/request_token",
             method: "GET",
             callbackURL: URL(string: "shola://oauth"),
             scope: nil,
