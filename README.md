@@ -43,13 +43,13 @@ This well was smoother for me in terms of development. It took me quite some tim
 
 I also initially had trouble with completions. My autocomplete has been pretty finicky in xcode so understanding the syntax and trying to make it work, soaked up more time than it should. I also had an issue here I wrote something like this
 ```
-tweet.unretweet(completion: { (tweet, error) in
+tweet.unretweet(completion: { (newTweet, error) in
   if error != nil {
     self.retweetActionButton.setBackgroundImage(UIImage(named: "retweetActionOn"), for: UIControlState.normal)
   }
 })
 ```
-But I realized that I wanted to alter the `tweet` object with data I received from the completion. It seemed to update the object but the original `tweet` I used to call `tweet.unretweet` didn't update. Or at least it's internal value didn't change so that was interesting understanding how to solve for that.
+But I realized that I wanted to alter the `tweet` object with data I received from the completion. It seemed to update `newTweet` but the original `tweet` I used to call `tweet.unretweet` didn't update. Or at least it's internal value didn't change when I was observed at the end of the completion.
 
 I did have some ininital difficulty with how to understand hiding and showing the SoAndSo Retweeted at the top if a retweet in combination with AutoLayout. 
 
