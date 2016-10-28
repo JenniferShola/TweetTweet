@@ -27,8 +27,7 @@
 			<string>com.jennifershola.TweetTweet</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>jennifershola.com</string>
-				<string>jennifershola</string>
+				<string>shola</string>
 			</array>
 		</dict>
 	</array>
@@ -36,6 +35,11 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

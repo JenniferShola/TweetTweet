@@ -13,11 +13,25 @@ import BDBOAuth1Manager
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var storyboard = UIStoryboard.init(name: "Main", bundle: nil)
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(AppDelegate.userDidLogout), name: userDidLogoutNotification, object: nil)
+        
+        if User.currentUser != nil {
+            //Go to login screen
+            print("CURRENT USER DETECTED WITH NAME: \(User.currentUser?.name)")
+            let vc = storyboard.instantiateViewController(withIdentifier: "TweetsNavigationController") as UIViewController
+            window?.rootViewController = vc
+        }
         // Override point for customization after application launch.
         return true
+    }
+    
+    func userDidLogout() {
+        let vc = storyboard.instantiateInitialViewController()
+        window?.rootViewController = vc
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -43,19 +57,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-        TwitterClient.sharedInstance.fetchAccessToken(withPath: "oauth/access_token",
-                                                      method: "POST",
-                                                      requestToken: BDBOAuth1Credential (queryString: url.query),
-                                                      success: { (accessToken: BDBOAuth1Credential?) -> Void in
-                                                        print("got access token: \(accessToken!.debugDescription)")
-                                                        print("token: \(accessToken!.token!)")
-                                                        print("secret: \(accessToken!.secret!)")
-                                                        TwitterClient.sharedInstance.requestSerializer.saveAccessToken(accessToken)
-            },
-                                                      failure: { (error: Error?) -> Void in
-                                                        print("failed to get access token")
-        })
-
+        
+        TwitterClient.sharedInstance.openUrl(url: url)
+        
         return true
     }
 
