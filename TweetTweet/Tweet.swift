@@ -29,14 +29,20 @@ class Tweet: NSObject {
     var favoriteCount: Int?
     var retweetCount: Int?
     
+    var formatter = DateFormatter()
+    
     init(dictionary: NSDictionary) {
         if let retweetedStatus = dictionary["retweeted_status"] as? NSDictionary {
-            retweetedByHandleString = (dictionary.value(forKey: "user") as! NSDictionary).value(forKey: "name") as! String?
+            
+            
             text = retweetedStatus.value(forKey: "text") as! String?
             id = retweetedStatus.value(forKey: "id") as! Int?
             id_str = retweetedStatus.value(forKey: "id_str") as! String?
             favoriteCount = retweetedStatus.value(forKey: "favorite_count") as! Int?
             retweetCount = retweetedStatus.value(forKey: "retweet_count") as! Int?
+            
+            
+            retweetedByHandleString = (dictionary.value(forKey: "user") as! NSDictionary).value(forKey: "name") as! String?
             user = User.init(dictionary: retweetedStatus.value(forKey: "user") as! NSDictionary)
             handle = user?.screenname
             profileUrl = user?.profileImageUrl
@@ -53,7 +59,6 @@ class Tweet: NSObject {
             createdAtString = dictionary["created_at"] as? String
         }
         
-        let formatter = DateFormatter()
         formatter.dateFormat = "EEE MMM d HH:mm:ss Z y"
         createdAt = formatter.date(from: createdAtString!) as NSDate?
     }
@@ -130,6 +135,11 @@ class Tweet: NSObject {
         }
     }
     
+    func getLongReadableDate(){
+        formatter.dateFormat = "EEE MMM d HH:mm:ss Z y"
+        createdAt = formatter.date(from: createdAtString!) as NSDate?
+    }
+    
     func updateTweetValues(dictionary: NSDictionary) {
         if let retweetedStatus = dictionary["retweeted_status"] as? NSDictionary {
             self.retweetedByHandleString = (dictionary.value(forKey: "user") as! NSDictionary).value(forKey: "name") as! String?
@@ -154,8 +164,6 @@ class Tweet: NSObject {
             self.createdAtString = dictionary["created_at"] as? String
         }
         
-        let formatter = DateFormatter()
-        formatter.dateFormat = "EEE MMM d HH:mm:ss Z y"
         createdAt = formatter.date(from: createdAtString!) as NSDate?
     }
 
