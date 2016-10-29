@@ -22,6 +22,9 @@ class TimelineTweetCell: UITableViewCell {
     @IBOutlet weak var replyActionImage: UIImageView!
     @IBOutlet weak var retweetActionButton: UIButton!
     @IBOutlet weak var favoriteActionButton: UIButton!
+
+    @IBOutlet weak var headerView: UIView!
+    
     
     var tweet: Tweet!
     

@@ -12,22 +12,23 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     
     var titleView = UIImageView(frame:CGRect(x: 0, y: 0, width: 40, height: 35))
     var tweets: [Tweet?]?
-    
+    let paragraphStyle = NSMutableParagraphStyle()
+
     @IBOutlet weak var tableView: UITableView!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        paragraphStyle.lineSpacing = 2.5
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refreshControlAction(_:)), for: UIControlEvents.valueChanged)
         tableView.insertSubview(refreshControl, at: 0)
-        
         
         tableView.delegate = self
         tableView.dataSource = self
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 120
+        
         self.tableView.reloadData()
         
         titleView.contentMode = .scaleAspectFit
@@ -66,16 +67,19 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         if let tweet = self.tweets?[indexPath.row] {
             cell.profileNameLabel.text = tweet.user!.name!
             cell.handleLabel.text = "@\(tweet.user!.screenname!)"
-            cell.tweetTextLabel.text = tweet.text!
             cell.timeLabel.text = "34m"
             cell.tweet = tweet
+            
+            let attrTweetText = NSMutableAttributedString(string: tweet.text!)
+            attrTweetText.addAttribute(NSParagraphStyleAttributeName, value:paragraphStyle, range:NSMakeRange(0, attrTweetText.length))
+            cell.tweetTextLabel.attributedText = attrTweetText
             
             if let retweet = tweet.retweetedByHandleString {
                 cell.retweetHandleLabel.text = "\(retweet) Retweeted"
                 cell.retweetImage.image = UIImage(named: "retweetActionOn")
+                cell.headerView.isHidden = false
             } else {
-                cell.retweetHandleLabel.text = "No Retweeted"
-                cell.retweetImage.image = UIImage(named: "retweetAction")
+                cell.headerView.isHidden = true
             }
             
             if tweet.retweeted == true {

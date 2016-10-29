@@ -57,7 +57,7 @@ class User: NSObject {
             
             if _currentUser != nil {
                 do {
-                    if let data = try JSONSerialization.data(withJSONObject: user!.dictionary, options: JSONSerialization.WritingOptions.prettyPrinted) as? Data {
+                    if let data = try JSONSerialization.data(withJSONObject: user!.dictionary, options: JSONSerialization.WritingOptions.prettyPrinted) as Data? {
                         UserDefaults.standard.set(data, forKey: currentUserKey)
                     }
                 } catch {
