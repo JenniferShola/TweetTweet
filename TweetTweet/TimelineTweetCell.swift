@@ -44,6 +44,7 @@ class TimelineTweetCell: UITableViewCell {
         if tweet.favorited == false {
             favoriteActionButton.setBackgroundImage(UIImage(named: "favoriteActionOn"), for: UIControlState.normal)
             favoriteCountLabel.text = "\(tweet.favoriteCount!+1)"
+            favoriteCountLabel.textColor = Helper.sharedInstance.twitterPink()
             
             tweet.favorite(completion: { (newTweet, error) in
                 if error != nil {
@@ -58,6 +59,7 @@ class TimelineTweetCell: UITableViewCell {
         } else {
             favoriteActionButton.setBackgroundImage(UIImage(named: "favoriteAction"), for: UIControlState.normal)
             favoriteCountLabel.text = "\(self.tweet.favoriteCount!-1)"
+            favoriteCountLabel.textColor = Helper.sharedInstance.twitterGray()
             
             tweet.unfavorite(completion: { (newTweet, error) in
                 if error != nil {

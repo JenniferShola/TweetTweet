@@ -19,20 +19,30 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>UITextView+Placeholder.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>0F2AA5FBDD1DD7C4F909EA57FF4AB2BE</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>4878C70B21CA37D7CB8A476BF986741B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9DB0576C6766A4004D9E5F25EA8CA6D3</key>
+		<key>AE6A4AC269D91F7FF73F67FEEEF0FC11</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>AE6A4AC269D91F7FF73F67FEEEF0FC11</key>
+		<key>D3AD68143F66137E9B9DBB907C32E8B8</key>
 		<dict>
 			<key>primary</key>
 			<true/>

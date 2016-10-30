@@ -8,5 +8,5 @@ target 'TweetTweet' do
   # Pods for TweetTweet
   pod 'AFNetworking', '~> 2.6.3'
   pod 'BDBOAuth1Manager', '~> 1.6.0'
-
+  pod 'UITextView+Placeholder', '~> 1.2'
 end

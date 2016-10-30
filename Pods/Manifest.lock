@@ -23,15 +23,18 @@ PODS:
   - BDBOAuth1Manager (1.6.0):
     - AFNetworking/NSURLConnection (~> 2.6.0)
     - AFNetworking/NSURLSession (~> 2.6.0)
+  - UITextView+Placeholder (1.2.0)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.6.3)
   - BDBOAuth1Manager (~> 1.6.0)
+  - UITextView+Placeholder (~> 1.2)
 
 SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
   BDBOAuth1Manager: cd5a5872f355ca38180d52ca2dd844f0b0c84797
+  UITextView+Placeholder: 77680995fcdd07c3f52ec92fe1150874a2ac89ff
 
-PODFILE CHECKSUM: 90f4b2c9c6f7c357ffe4135efe50220baa2cb9a9
+PODFILE CHECKSUM: 21adf6412282d06375759836859b2d3422cfccd5
 
 COCOAPODS: 1.0.1

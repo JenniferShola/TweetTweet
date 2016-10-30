@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "0F2AA5FBDD1DD7C4F909EA57FF4AB2BE"
-               BuildableName = "Pods_TweetTweet.framework"
-               BlueprintName = "Pods-TweetTweet"
+               BlueprintIdentifier = "D3AD68143F66137E9B9DBB907C32E8B8"
+               BuildableName = "UITextView_Placeholder.framework"
+               BlueprintName = "UITextView+Placeholder"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "0F2AA5FBDD1DD7C4F909EA57FF4AB2BE"
-            BuildableName = "Pods_TweetTweet.framework"
-            BlueprintName = "Pods-TweetTweet"
+            BlueprintIdentifier = "D3AD68143F66137E9B9DBB907C32E8B8"
+            BuildableName = "UITextView_Placeholder.framework"
+            BlueprintName = "UITextView+Placeholder"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

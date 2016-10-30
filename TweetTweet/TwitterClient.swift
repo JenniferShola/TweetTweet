@@ -67,6 +67,18 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
         })
     }
     
+    func composeTweet(status: String?, in_reply_to: Int?, completion: @escaping (_ dictionary: NSDictionary?, _ error: Error?) -> ()){
+        let keys = ["status", "in_reply_to_status_id"]
+        let params = NSDictionary.init(objects: [status!, 123], forKeys: keys as [NSCopying])
+        
+        post("1.1/statuses/update.json", parameters: params, success: { (operation, response) in
+            completion((response as! NSDictionary), nil)
+            }, failure: { (operation, error) in
+                print("ERROR composing tweet: \(error.localizedDescription)")
+                completion(nil, error)
+        })
+    }
+    
     func retweetTweet(tweet: Tweet?, completion: @escaping (_ tweet: NSDictionary?, _ error: Error?) -> ()){
         retweetAction(endpoint: "retweet", tweet: tweet, completion: completion)
     }

@@ -46,6 +46,18 @@ class Helper: NSObject {
         return UIColor.init(red: CGFloat.init(42.0/255.0), green: CGFloat.init(163.0/255.0), blue: CGFloat.init(239.0/255.0), alpha: 1)
     }
     
+    func twitterGray() -> UIColor {
+        return UIColor.init(red: CGFloat.init(170.0/255.0), green: CGFloat.init(184.0/255.0), blue: CGFloat.init(194.0/255.0), alpha: 1)
+    }
+    
+    func twitterPink() -> UIColor {
+        return UIColor.init(red: CGFloat.init(232.0/255.0), green: CGFloat.init(28.0/255.0), blue: CGFloat.init(79.0/255.0), alpha: 1)
+    }
+    
+    func twitterPink(alpha: CGFloat?) -> UIColor {
+        return UIColor.init(red: CGFloat.init(232.0/255.0), green: CGFloat.init(28.0/255.0), blue: CGFloat.init(79.0/255.0), alpha: alpha!)
+    }
+    
     func formatNumber(truncated: Bool, number: Int?) -> String! {
         if truncated == true {
             if number! > 1000000 {
@@ -81,4 +93,29 @@ class Helper: NSObject {
         
         return "0s"
     }
+    
+    func setButtonImage(button: UIButton!, imageName: String!) {
+        button.setBackgroundImage(UIImage(named: imageName), for: UIControlState.normal)
+    }
+    
+    func setFavoriteActionButton(favorited: Bool?, button: UIButton?) {
+        if favorited! == true {
+            Helper.sharedInstance.setButtonImage(button: button, imageName: "favoriteActionOn")
+        } else {
+            Helper.sharedInstance.setButtonImage(button: button, imageName: "favoriteAction")
+        }
+    }
+    
+    func setRetweetActionButton(retweeted: Bool?, button: UIButton?) {
+        if retweeted! == true {
+            Helper.sharedInstance.setButtonImage(button: button, imageName: "retweetActionOn")
+        } else {
+            Helper.sharedInstance.setButtonImage(button: button, imageName: "retweetAction")
+        }
+    }
+    
+    
+    
+    
+    
 }

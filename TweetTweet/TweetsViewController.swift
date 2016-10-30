@@ -11,7 +11,6 @@ import UIKit
 class TweetsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate  {
 
     var titleView = UIImageView(frame:CGRect(x: 0, y: 0, width: 45, height: 40))
-    var rightBarView = UIImageView(frame:CGRect(x: 0, y: 0, width: 40, height: 34))
     let paragraphStyle = NSMutableParagraphStyle()
     var isMoreDataLoading = false
     var tweets: [Tweet?]?
@@ -38,11 +37,10 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         titleView.contentMode = .scaleAspectFit
         titleView.image = UIImage(named: "Twitter_Logo_Blue")
         
-        rightBarView.contentMode = .scaleAspectFit
-        rightBarView.image = UIImage(named: "composeIcon")
-        
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBarView)
+        //self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBarView)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "logoutIcon"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(onLogout))
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "composeIcon"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(onCompose))
         
         self.navigationItem.titleView = titleView
         self.navigationController?.navigationBar.sizeToFit()
@@ -98,13 +96,23 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         return params
     }
     
+    func finishedComposing() {
+        self.tableView.reloadData()
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let cell = sender as! TimelineTweetCell
-        let indexPath = tableView.indexPath(for: cell)
-        let tweet = tweets![(indexPath! as NSIndexPath).row]
-        
-        let detailViewController = segue.destination as! DetailViewController
-        detailViewController.tweet = tweet
+        if segue.identifier == "composeSegue" {
+            let navigationViewController = segue.destination as! UINavigationController
+            let composeViewController = navigationViewController.topViewController as!ComposeViewController
+            composeViewController.tweets = self.tweets!
+        } else {
+            let cell = sender as! TimelineTweetCell!
+            let indexPath = tableView.indexPath(for: cell!)
+            let tweet = tweets![(indexPath! as NSIndexPath).row]
+            
+            let detailViewController = segue.destination as! DetailViewController
+            detailViewController.tweet = tweet
+        }
     }
     
     
@@ -136,7 +144,6 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
                 cell.mediaView.isHidden = true
             }
             
-            
             cell.handleLabel.text = "\(tweet.user!.screenname!)"
             cell.profileNameLabel.text = tweet.user!.name!
             cell.tweet = tweet
@@ -146,6 +153,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
             
             tweet.attributeText!.addAttribute(NSParagraphStyleAttributeName, value:paragraphStyle, range:NSMakeRange(0, tweet.attributeText!.length))
             cell.tweetTextLabel.attributedText = tweet.attributeText!
+            
             // TODO: Reorganize body view to allow tweet text to be hidden if needed
             
             if tweet.retweetedByHandleString != nil {
@@ -156,17 +164,8 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
                 cell.headerView.isHidden = true
             }
             
-            if tweet.retweeted == true {
-                setButtonImage(button: cell.retweetActionButton, imageName: "retweetActionOn")
-            } else {
-                setButtonImage(button: cell.retweetActionButton, imageName: "retweetAction")
-            }
-            
-            if tweet.favorited == true {
-                setButtonImage(button: cell.favoriteActionButton, imageName: "favoriteActionOn")
-            } else {
-                setButtonImage(button: cell.favoriteActionButton, imageName: "favoriteAction")
-            }
+            Helper.sharedInstance.setFavoriteActionButton(favorited: tweet.favorited, button: cell.favoriteActionButton)
+            Helper.sharedInstance.setRetweetActionButton(retweeted: tweet.retweeted, button: cell.retweetActionButton)
             
             cell.timeLabel.text = tweet.getActivitySince()!
             
@@ -180,12 +179,13 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         return tweets?.count ?? 0
     }
     
-    func setButtonImage(button: UIButton!, imageName: String!) {
-        button.setBackgroundImage(UIImage(named: imageName), for: UIControlState.normal)
-    }
 
     @IBAction func onLogout(_ sender: AnyObject) {
         User.currentUser?.logout()
+    }
+    
+    @IBAction func onCompose(_ sender: AnyObject) {
+        performSegue(withIdentifier: "composeSegue", sender: self)
     }
 
 }

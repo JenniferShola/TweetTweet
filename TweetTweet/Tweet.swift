@@ -17,6 +17,7 @@ class Tweet: NSObject {
     
     var text: String?
     var handle: String?
+    var retweetedByScreenName: String?
     var retweetedByHandleString: String?
     var attributeText: NSMutableAttributedString?
     
@@ -41,6 +42,7 @@ class Tweet: NSObject {
         
         if let retweetedStatus = diction["retweeted_status"] as? NSDictionary {
             retweetedByHandleString = (diction.value(forKey: "user") as! NSDictionary).value(forKey: "name") as! String?
+            retweetedByScreenName = "@\(((diction.value(forKey: "user") as! NSDictionary).value(forKey: "screen_name") as! String?)!)"
             entitiesDictionary = retweetedStatus.value(forKey: "entities") as! NSDictionary?
             diction = retweetedStatus
         }
