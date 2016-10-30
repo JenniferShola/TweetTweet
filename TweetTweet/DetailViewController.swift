@@ -20,12 +20,12 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var retweetHandleLabel: UILabel!
     @IBOutlet weak var retweetAction: UIImageView!
     
-    @IBOutlet weak var likeActionImage: UIImageView!
-    @IBOutlet weak var retweetActionImage: UIImageView!
-    @IBOutlet weak var replyActionImage: UIImageView!
-    
     @IBOutlet weak var retweetCountLabel: UILabel!
     @IBOutlet weak var likeCountLabel: UILabel!
+    
+    @IBOutlet weak var mediaView: UIView!
+    @IBOutlet weak var mediaImage: UIImageView!
+    
     
     let paragraphStyle = NSMutableParagraphStyle()
     var tweet: Tweet?
@@ -42,12 +42,19 @@ class DetailViewController: UIViewController {
             userHandleLabel.text = tweet!.user!.screenname
             createdAtString.text = tweet!.getCreation()
             
-            if let retweet = tweet?.retweetedByHandleString {
-                retweetHandleLabel.text = "\(retweet) Retweeted"
+            if tweet?.retweetedByHandleString != nil {
+                retweetHandleLabel.text = tweet!.getRetweetHandleTitle()
                 retweetAction.image = UIImage(named: "retweetActionOn")
                 headerView.isHidden = false
             } else {
                 headerView.isHidden = true
+            }
+        
+            if (tweet?.media_included)! {
+                mediaImage.setImageWith(tweet!.mediaImageUrl!)
+                mediaView.isHidden = false
+            } else {
+                mediaView.isHidden = true
             }
             
             let attrTweetText = NSMutableAttributedString(string: tweet!.text!)

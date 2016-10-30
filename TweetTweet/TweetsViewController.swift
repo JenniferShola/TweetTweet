@@ -8,12 +8,16 @@
 
 import UIKit
 
-class TweetsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    
-    var titleView = UIImageView(frame:CGRect(x: 0, y: 0, width: 40, height: 35))
-    var tweets: [Tweet?]?
-    let paragraphStyle = NSMutableParagraphStyle()
+class TweetsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate  {
 
+    var titleView = UIImageView(frame:CGRect(x: 0, y: 0, width: 40, height: 35))
+    let paragraphStyle = NSMutableParagraphStyle()
+    var isMoreDataLoading = false
+    var tweets: [Tweet?]?
+    var since_id = 0    // Returns results with an ID greater than (that is, more recent than) the specified ID.
+    var max_id = 0      // Returns results with an ID less than (that is, older than) or equal to the specified ID.
+    
+    
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
@@ -38,10 +42,52 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         self.navigationController?.navigationBar.sizeToFit()
         
         TwitterClient.sharedInstance.homeTimeline(params: nil) { (tweets, error) in
+            let length = tweets?.count ?? 0
+            
             self.tweets = tweets
             self.tableView.reloadData()
-            //tableview did load 
+            
+            if length == 1 {
+                self.since_id = (self.tweets?[0]!.id)!
+                self.max_id = (self.tweets![0]!.id)!
+            } else if length > 1 {
+                self.since_id = (self.tweets?[0]!.id)!
+                self.max_id = (self.tweets![length-1]!.id)!
+            }
         }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if (!isMoreDataLoading) {
+            let scrollViewContentHeight = tableView.contentSize.height + 20
+            let scrollOffsetThreshold = scrollViewContentHeight - tableView.bounds.size.height
+            
+            if(scrollView.contentOffset.y > scrollOffsetThreshold && tableView.isDragging) {
+                isMoreDataLoading = true
+                
+                TwitterClient.sharedInstance.homeTimeline(params: formatTimelineParams(key: "max_id", value: max_id)) { (newTweets, error) in
+                    if let twits = newTweets {
+                        for t in twits {
+                            self.tweets!.append(t)
+                        }
+                        
+                        let length = self.tweets?.count ?? 0
+                        self.max_id = (self.tweets![length-1]?.id)!
+                        
+                        self.isMoreDataLoading = false
+                        self.tableView.reloadData()
+                    } else {
+                        self.isMoreDataLoading = false
+                    }
+                }
+            }
+        }
+    }
+    
+    func formatTimelineParams(key: String?, value: Int?) -> NSDictionary{
+        let keys = [key!]
+        let params = NSDictionary.init(objects: [value!], forKeys: keys as [NSCopying])
+        return params
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -54,9 +100,17 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func refreshControlAction(_ refreshControl: UIRefreshControl) {
-        TwitterClient.sharedInstance.homeTimeline(params: nil) { (tweets, error) in
-            self.tweets = tweets
-            self.tableView.reloadData()
+        TwitterClient.sharedInstance.homeTimeline(params: formatTimelineParams(key: "since_id", value: since_id)) { (newTweets, error) in
+            if let twits = newTweets {
+                for t in twits.reversed() {
+                    self.tweets!.insert(t, at: 0)
+                }
+                
+                self.since_id = (self.tweets![0]?.id)!
+                
+                self.isMoreDataLoading = false
+                self.tableView.reloadData()
+            }
             refreshControl.endRefreshing()
         }
     }
@@ -65,17 +119,19 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         let cell = tableView.dequeueReusableCell(withIdentifier: "timelineTweet") as! TimelineTweetCell
         
         if let tweet = self.tweets?[indexPath.row] {
+            cell.handleLabel.text = "\(tweet.user!.screenname!)"
             cell.profileNameLabel.text = tweet.user!.name!
-            cell.handleLabel.text = "@\(tweet.user!.screenname!)"
-            cell.timeLabel.text = "34m"
             cell.tweet = tweet
+            
+            cell.favoriteCountLabel.text = "\(tweet.favoriteCount!)"
+            cell.retweetsCountLabel.text = "\(tweet.retweetCount!)"
             
             let attrTweetText = NSMutableAttributedString(string: tweet.text!)
             attrTweetText.addAttribute(NSParagraphStyleAttributeName, value:paragraphStyle, range:NSMakeRange(0, attrTweetText.length))
             cell.tweetTextLabel.attributedText = attrTweetText
             
-            if let retweet = tweet.retweetedByHandleString {
-                cell.retweetHandleLabel.text = "\(retweet) Retweeted"
+            if tweet.retweetedByHandleString != nil {
+                cell.retweetHandleLabel.text = tweet.getRetweetHandleTitle()
                 cell.retweetImage.image = UIImage(named: "retweetActionOn")
                 cell.headerView.isHidden = false
             } else {
@@ -92,6 +148,13 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
                 setButtonImage(button: cell.favoriteActionButton, imageName: "favoriteActionOn")
             } else {
                 setButtonImage(button: cell.favoriteActionButton, imageName: "favoriteAction")
+            }
+            
+            if tweet.media_included {
+                cell.mediaImageView.setImageWith(tweet.mediaImageUrl!)
+                cell.mediaView.isHidden = false
+            } else {
+                cell.mediaView.isHidden = true
             }
             
             cell.timeLabel.text = tweet.getActivitySince()!

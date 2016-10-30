@@ -23,8 +23,12 @@ class TimelineTweetCell: UITableViewCell {
     @IBOutlet weak var retweetActionButton: UIButton!
     @IBOutlet weak var favoriteActionButton: UIButton!
 
+    @IBOutlet weak var mediaView: UIView!
+    @IBOutlet weak var mediaImageView: UIImageView!
     @IBOutlet weak var headerView: UIView!
     
+    @IBOutlet weak var retweetsCountLabel: UILabel!
+    @IBOutlet weak var favoriteCountLabel: UILabel!
     
     var tweet: Tweet!
     
@@ -43,22 +47,31 @@ class TimelineTweetCell: UITableViewCell {
         if tweet.favorited == false {
             //add animation
             favoriteActionButton.setBackgroundImage(UIImage(named: "favoriteActionOn"), for: UIControlState.normal)
-            //increament count label
+            favoriteCountLabel.text = "\(tweet.favoriteCount!+1)"
             
-            tweet.favorite(completion: { (tweet, error) in
+            tweet.favorite(completion: { (newTweet, error) in
                 if error != nil {
                     self.favoriteActionButton.setBackgroundImage(UIImage(named: "favoriteAction"), for: UIControlState.normal)
-                    //decrease count
+                    self.favoriteCountLabel.text = "\(self.tweet.favoriteCount!)"
+                } else {
+                    self.tweet.favorited = true
+                    let c = self.tweet.favoriteCount!
+                    self.tweet.favoriteCount = c+1
                 }
             })
         } else {
             //add animation
             favoriteActionButton.setBackgroundImage(UIImage(named: "favoriteAction"), for: UIControlState.normal)
-            //decrease count label
+            favoriteCountLabel.text = "\(self.tweet.favoriteCount!-1)"
             
-            tweet.unfavorite(completion: { (tweet, error) in
+            tweet.unfavorite(completion: { (newTweet, error) in
                 if error != nil {
                     self.favoriteActionButton.setBackgroundImage(UIImage(named: "favoriteActionOn"), for: UIControlState.normal)
+                    self.favoriteCountLabel.text = "\(self.tweet.favoriteCount!)"
+                } else {
+                    self.tweet.favorited = false
+                    let c = self.tweet.favoriteCount!
+                    self.tweet.favoriteCount = c-1
                 }
             })
 
@@ -69,22 +82,30 @@ class TimelineTweetCell: UITableViewCell {
         if tweet.retweeted == false {
             //add animation
             retweetActionButton.setBackgroundImage(UIImage(named: "retweetActionOn"), for: UIControlState.normal)
-            //increament count label
+            retweetsCountLabel.text = "\(self.tweet.retweetCount!+1)"
             
             tweet.retweet(completion: { (tweet, error) in
                 if error != nil {
                     self.retweetActionButton.setBackgroundImage(UIImage(named: "retweetAction"), for: UIControlState.normal)
+                } else {
+                    self.tweet.retweeted = true
+                    let c = self.tweet.retweetCount!
+                    self.tweet.retweetCount = c+1
                 }
             })
             
         } else {
             //add animation
             retweetActionButton.setBackgroundImage(UIImage(named: "retweetAction"), for: UIControlState.normal)
-            //decrease count label
+            retweetsCountLabel.text = "\(self.tweet.retweetCount!-1)"
             
             tweet.unretweet(completion: { (tweet, error) in
                 if error != nil {
                     self.retweetActionButton.setBackgroundImage(UIImage(named: "retweetActionOn"), for: UIControlState.normal)
+                } else {
+                    self.tweet.retweeted = false
+                    let c = self.tweet.retweetCount!
+                    self.tweet.retweetCount = c-1
                 }
             })
         }

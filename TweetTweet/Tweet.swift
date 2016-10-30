@@ -29,6 +29,11 @@ class Tweet: NSObject {
     var favoriteCount: Int?
     var retweetCount: Int?
     
+    var media_included = Bool()
+    var mediaImageUrl: URL!
+    
+    var user_mentions_included = false
+    
     var formatter = DateFormatter()
     var formatterShort = DateFormatter()
     
@@ -36,21 +41,22 @@ class Tweet: NSObject {
     let unitFlags = Set([Calendar.Component.year, Calendar.Component.weekOfYear, Calendar.Component.month, Calendar.Component.day, Calendar.Component.hour, Calendar.Component.minute, Calendar.Component.second]) as Set<Calendar.Component>
     
     init(dictionary: NSDictionary) {
+        var entitiesDictionary: NSDictionary?
+        
         if let retweetedStatus = dictionary["retweeted_status"] as? NSDictionary {
-            
-            
             text = retweetedStatus.value(forKey: "text") as! String?
             id = retweetedStatus.value(forKey: "id") as! Int?
             id_str = retweetedStatus.value(forKey: "id_str") as! String?
             favoriteCount = retweetedStatus.value(forKey: "favorite_count") as! Int?
             retweetCount = retweetedStatus.value(forKey: "retweet_count") as! Int?
-            
-            
             retweetedByHandleString = (dictionary.value(forKey: "user") as! NSDictionary).value(forKey: "name") as! String?
             user = User.init(dictionary: retweetedStatus.value(forKey: "user") as! NSDictionary)
             handle = user?.screenname
             profileUrl = user?.profileImageUrl
             createdAtString = retweetedStatus.value(forKey: "created_at") as! String?
+            
+            favorited = retweetedStatus["favourited"] as? Bool ?? false
+            entitiesDictionary = retweetedStatus.value(forKey: "entities") as! NSDictionary?
         } else {
             user = User.init(dictionary: dictionary["user"] as! NSDictionary)
             handle = user?.screenname
@@ -61,11 +67,34 @@ class Tweet: NSObject {
             favoriteCount = dictionary["favorite_count"] as? Int
             retweetCount = dictionary["retweet_count"] as? Int
             createdAtString = dictionary["created_at"] as? String
+            
+            favorited = dictionary["favourited"] as? Bool ?? false
+            entitiesDictionary = dictionary["entities"] as? NSDictionary
         }
+        
         
         formatter.dateFormat = "EEE MMM d HH:mm:ss Z y"
         formatterShort.dateFormat = "M/d/yy h:mma"
         createdAt = formatter.date(from: createdAtString!) as Date?
+        
+        // Parse out photo media
+        if let media = entitiesDictionary?.value(forKey: "media") as? [NSDictionary?] {
+            
+            let media_url = media[0]!.value(forKey: "media_url_https") as? String
+            self.mediaImageUrl = URL.init(string: media_url!)!
+            self.media_included = true
+            
+            let removeFromString = media[0]!.value(forKey: "url") as? String
+            let original_text = self.text!
+            
+            if let xyzRange = self.text!.range(of: removeFromString!) {
+                self.text!.replaceSubrange(xyzRange, with: "")
+            }
+            
+            self.text = original_text.replacingOccurrences(of: removeFromString!, with: "")
+        } else {
+            self.media_included = false
+        }
     }
     
     class func tweetsWithArray(array: [NSDictionary]) -> [Tweet] {
@@ -84,7 +113,6 @@ class Tweet: NSObject {
                     self.favorited = false
                     completion(nil, error)
                 } else {
-                    self.updateTweetValues(dictionary: tweetDictionary!)
                     completion(self, nil)
                 }
             }
@@ -99,9 +127,6 @@ class Tweet: NSObject {
                     self.favorited = true
                     completion(nil, error)
                 } else {
-                    self.updateTweetValues(dictionary: tweetDictionary!)
-                    let rc = self.favoriteCount!
-                    self.favoriteCount = rc-1
                     completion(self, nil)
                 }
             }
@@ -116,7 +141,6 @@ class Tweet: NSObject {
                     self.retweeted = false
                     completion(nil, error)
                 } else {
-                    self.updateTweetValues(dictionary: tweetDictionary!)
                     completion(self, nil)
                 }
             }
@@ -131,13 +155,15 @@ class Tweet: NSObject {
                     self.retweeted = true
                     completion(nil, error)
                 } else {
-                    self.updateTweetValues(dictionary: tweetDictionary!)
-                    let rc = self.retweetCount!
-                    self.retweetCount = rc-1
                     completion(self, nil)
                 }
             }
         }
+    }
+    
+    func getRetweetHandleTitle() -> String! {
+        let person = retweetedByHandleString ?? "No"
+        return "\(person) Retweeted"
     }
     
     func getCreation() -> String? {
@@ -164,33 +190,6 @@ class Tweet: NSObject {
         }
         
         return "0s"
-    }
-    
-    func updateTweetValues(dictionary: NSDictionary) {
-        if let retweetedStatus = dictionary["retweeted_status"] as? NSDictionary {
-            self.retweetedByHandleString = (dictionary.value(forKey: "user") as! NSDictionary).value(forKey: "name") as! String?
-            self.text = retweetedStatus.value(forKey: "text") as! String?
-            self.id = retweetedStatus.value(forKey: "id") as! Int?
-            self.id_str = retweetedStatus.value(forKey: "id_str") as! String?
-            self.favoriteCount = retweetedStatus.value(forKey: "favorite_count") as! Int?
-            self.retweetCount = retweetedStatus.value(forKey: "retweet_count") as! Int?
-            self.user = User.init(dictionary: retweetedStatus.value(forKey: "user") as! NSDictionary)
-            self.handle = user?.screenname
-            self.profileUrl = user?.profileImageUrl
-            self.createdAtString = retweetedStatus.value(forKey: "created_at") as! String?
-        } else {
-            self.user = User.init(dictionary: dictionary["user"] as! NSDictionary)
-            self.handle = user?.screenname
-            self.profileUrl = user?.profileImageUrl
-            self.text = dictionary["text"] as? String
-            self.id = dictionary["id"] as? Int
-            self.id_str = dictionary["id_str"] as? String
-            self.favoriteCount = dictionary["favorite_count"] as? Int
-            self.retweetCount = dictionary["retweet_count"] as? Int
-            self.createdAtString = dictionary["created_at"] as? String
-        }
-        
-        createdAt = formatter.date(from: createdAtString!) as Date?
     }
 
 }

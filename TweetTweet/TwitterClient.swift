@@ -31,7 +31,7 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
             let tweets = Tweet.tweetsWithArray(array: response as! [NSDictionary])
             completion(tweets, nil)
         }, failure: { (operation, error) in
-            print("ERROR getting current home TL")
+            print("ERROR getting current home TL: \(error.localizedDescription)")
             completion(nil, error)
         })
     }
@@ -79,7 +79,6 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
     func loginWithCompletion(completion: @escaping (_ user: User?, _ error: Error?) -> ()) {
         loginCompletion = completion
 
-        // Fetch request token & redirect to authorization page
         requestSerializer.removeAccessToken()
         fetchRequestToken(withPath: "oauth/request_token",
             method: "GET",
