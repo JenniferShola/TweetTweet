@@ -26,7 +26,7 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var mediaView: UIView!
     @IBOutlet weak var mediaImage: UIImageView!
     
-    
+    let alertController = UIAlertController(title: "Title", message: "Message", preferredStyle: .alert)
     let paragraphStyle = NSMutableParagraphStyle()
     var tweet: Tweet?
     
@@ -43,7 +43,7 @@ class DetailViewController: UIViewController {
             createdAtString.text = tweet!.getCreation()
             
             if tweet?.retweetedByHandleString != nil {
-                retweetHandleLabel.text = tweet!.getRetweetHandleTitle()
+                retweetHandleLabel.text = tweet!.retweetHandle()
                 retweetAction.image = UIImage(named: "retweetActionOn")
                 headerView.isHidden = false
             } else {
@@ -57,34 +57,20 @@ class DetailViewController: UIViewController {
                 mediaView.isHidden = true
             }
             
-            let attrTweetText = NSMutableAttributedString(string: tweet!.text!)
-            attrTweetText.addAttribute(NSParagraphStyleAttributeName, value:paragraphStyle, range:NSMakeRange(0, attrTweetText.length))
-            tweetLabel.attributedText = attrTweetText
+            tweet!.attributeText?.addAttribute(NSParagraphStyleAttributeName, value:paragraphStyle, range:NSMakeRange(0, tweet!.attributeText!.length))
+            tweetLabel.attributedText = tweet!.attributeText!
             
-            retweetCountLabel.text = "\(tweet!.retweetCount!)"
-            likeCountLabel.text = "\(tweet!.favoriteCount!)"
+            retweetCountLabel.text = tweet!.retweetCountString(short: false)!
+            likeCountLabel.text = tweet!.favoriteCountString(short: false)!
             
         } else {
-            // go back to timeline
+            // TODO: This shouldn't happen but just in case, dismiss modal or something.
         }
         
     }
-    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

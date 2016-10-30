@@ -74,7 +74,9 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
                 TwitterClient.sharedInstance.homeTimeline(params: formatTimelineParams(key: "max_id", value: max_id)) { (newTweets, error) in
                     if let twits = newTweets {
                         for t in twits {
-                            self.tweets!.append(t)
+                            if (t.id != self.max_id) {
+                                self.tweets!.append(t)
+                            }
                         }
                         
                         let length = self.tweets?.count ?? 0
@@ -126,19 +128,28 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         let cell = tableView.dequeueReusableCell(withIdentifier: "timelineTweet") as! TimelineTweetCell
         
         if let tweet = self.tweets?[indexPath.row] {
+            cell.mediaImageView.image = nil
+            if tweet.media_included {
+                cell.mediaImageView.setImageWith(tweet.mediaImageUrl!)
+                cell.mediaView.isHidden = false
+            } else {
+                cell.mediaView.isHidden = true
+            }
+            
+            
             cell.handleLabel.text = "\(tweet.user!.screenname!)"
             cell.profileNameLabel.text = tweet.user!.name!
             cell.tweet = tweet
             
-            cell.favoriteCountLabel.text = "\(tweet.favoriteCount!)"
-            cell.retweetsCountLabel.text = "\(tweet.retweetCount!)"
+            cell.favoriteCountLabel.text = tweet.favoriteCountString(short: true)!
+            cell.retweetsCountLabel.text = tweet.retweetCountString(short: true)!
             
-            let attrTweetText = NSMutableAttributedString(string: tweet.text!)
-            attrTweetText.addAttribute(NSParagraphStyleAttributeName, value:paragraphStyle, range:NSMakeRange(0, attrTweetText.length))
-            cell.tweetTextLabel.attributedText = attrTweetText
+            tweet.attributeText!.addAttribute(NSParagraphStyleAttributeName, value:paragraphStyle, range:NSMakeRange(0, tweet.attributeText!.length))
+            cell.tweetTextLabel.attributedText = tweet.attributeText!
+            // TODO: Reorganize body view to allow tweet text to be hidden if needed
             
             if tweet.retweetedByHandleString != nil {
-                cell.retweetHandleLabel.text = tweet.getRetweetHandleTitle()
+                cell.retweetHandleLabel.text = tweet.retweetHandle()
                 cell.retweetImage.image = UIImage(named: "retweetActionOn")
                 cell.headerView.isHidden = false
             } else {
@@ -155,13 +166,6 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
                 setButtonImage(button: cell.favoriteActionButton, imageName: "favoriteActionOn")
             } else {
                 setButtonImage(button: cell.favoriteActionButton, imageName: "favoriteAction")
-            }
-            
-            if tweet.media_included {
-                cell.mediaImageView.setImageWith(tweet.mediaImageUrl!)
-                cell.mediaView.isHidden = false
-            } else {
-                cell.mediaView.isHidden = true
             }
             
             cell.timeLabel.text = tweet.getActivitySince()!

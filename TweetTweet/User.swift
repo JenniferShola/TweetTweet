@@ -22,7 +22,6 @@ class User: NSObject {
     
     init(dictionary: NSDictionary) {
         self.dictionary = dictionary
-        
         name = dictionary["name"] as? String
         screenname = "@\(dictionary["screen_name"] as! String)"
         profileImageUrl = dictionary["profile_image_url"] as? String
@@ -80,7 +79,4 @@ class User: NSObject {
             UserDefaults.standard.synchronize()
         }
     }
-    
-    
-
 }

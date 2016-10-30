@@ -34,18 +34,14 @@ class TimelineTweetCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
 
     @IBAction func onFavorite(_ sender: AnyObject) {
         if tweet.favorited == false {
-            //add animation
             favoriteActionButton.setBackgroundImage(UIImage(named: "favoriteActionOn"), for: UIControlState.normal)
             favoriteCountLabel.text = "\(tweet.favoriteCount!+1)"
             
@@ -60,7 +56,6 @@ class TimelineTweetCell: UITableViewCell {
                 }
             })
         } else {
-            //add animation
             favoriteActionButton.setBackgroundImage(UIImage(named: "favoriteAction"), for: UIControlState.normal)
             favoriteCountLabel.text = "\(self.tweet.favoriteCount!-1)"
             
@@ -79,7 +74,6 @@ class TimelineTweetCell: UITableViewCell {
     
     @IBAction func onRetweet(_ sender: AnyObject) {
         if tweet.retweeted == false {
-            //add animation
             retweetActionButton.setBackgroundImage(UIImage(named: "retweetActionOn"), for: UIControlState.normal)
             retweetsCountLabel.text = "\(self.tweet.retweetCount!+1)"
             
@@ -94,7 +88,6 @@ class TimelineTweetCell: UITableViewCell {
             })
             
         } else {
-            //add animation
             retweetActionButton.setBackgroundImage(UIImage(named: "retweetAction"), for: UIControlState.normal)
             retweetsCountLabel.text = "\(self.tweet.retweetCount!-1)"
             
