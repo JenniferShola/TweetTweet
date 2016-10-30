@@ -5,7 +5,7 @@ Homework 3! Codepath Twitter Demo Client
 
 **TweetTweet App** is a prototype of the Twitter app using the [Twitter API](https://dev.twitter.com/overview/api).
 
-Time spent: **21** hours spent in total
+Time spent: **25** hours spent in total
 
 ## User Stories
 
@@ -22,12 +22,15 @@ The following **required** functionality is completed:
 
 The following **optional** features are implemented:
 
+- [x] Added images so that photo media shows up when included in a tweet. Also removes the original url link from the text link.
+- [x] User can load more tweets once they reach the bottom of the feed using infinite loading similar to the actual Twitter client.
+- [x] User can pull to refresh only grabs the latest tweets the user has seen (not sure if this was originally required)
+- [x] Retweeting and favoriting should increment the retweet and favorite count.
+- [x] User should be able to unretweet and unfavorite and should decrement the retweet and favorite count.
 - [ ] When composing, you should have a countdown in the upper right for the tweet limit.
 - [ ] After creating a new tweet, a user should be able to view it in the timeline immediately without refetching the timeline from the network.
-- [ ] Retweeting and favoriting should increment the retweet and favorite count.
-- [ ] User should be able to unretweet and unfavorite and should decrement the retweet and favorite count.
 - [ ] Replies should be prefixed with the username and the reply_id should be set when posting the tweet,
-- [ ] User can load more tweets once they reach the bottom of the feed using infinite loading similar to the actual Twitter client.
+
 
 ## Video Walkthrough 
 
@@ -39,7 +42,7 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-This well was smoother for me in terms of development. It took me quite some time to get through the OAuth videos. I had a few misunderstandings about how that fit together and how to probably set up my accessToken.
+This went way smoother for me in terms of development. It took me quite some time to get through the OAuth videos. I had a few misunderstandings about how that fit together and how to probably set up my accessToken.
 
 I also initially had trouble with completions. My autocomplete has been pretty finicky in xcode so understanding the syntax and trying to make it work, soaked up more time than it should. I also had an issue here I wrote something like this
 ```
@@ -69,6 +72,3 @@ I did have some ininital difficulty with how to understand hiding and showing th
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-    
-    
-
