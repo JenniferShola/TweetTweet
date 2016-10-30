@@ -5,7 +5,7 @@ Homework 3! Codepath Twitter Demo Client
 
 **TweetTweet App** is a prototype of the Twitter app using the [Twitter API](https://dev.twitter.com/overview/api).
 
-Time spent: **26** hours spent in total
+Time spent: **30** hours spent in total
 
 ## User Stories
 
@@ -17,8 +17,8 @@ The following **required** functionality is completed:
 - [x] User can view tweet with the user profile picture, username, tweet text, and timestamp
 - [x] Design the custom cell with the proper Auto Layout settings. 
 - [x] User can pull to refresh
-- [ ] User can compose a new tweet by tapping on a compose button.
-- [ ] User can tap on a tweet to view it, with controls to retweet, favorite, and reply.
+- [x] User can compose a new tweet by tapping on a compose button.
+- [x] User can tap on a tweet to view it, with controls to retweet, favorite, and reply.
 
 The following **optional** features are implemented:
 
@@ -31,9 +31,9 @@ The following **optional** features are implemented:
 - [x] User should be able to unretweet and unfavorite and should decrement the retweet and favorite count.
 - [x] Also added styling so color changes as user retweet/unretweet and favorite/unfavorite.
 - [x] Retweet and favorite count are formatted based on the count (i.e. 15k on the timeline view vs 15,821 on the detailed expansion, etc).
-- [ ] When composing, you should have a countdown in the upper right for the tweet limit.
-- [ ] After creating a new tweet, a user should be able to view it in the timeline immediately without refetching the timeline from the network.
-- [ ] Replies should be prefixed with the username and the reply_id should be set when posting the tweet,
+- [x] When composing, you should have a countdown in the upper right for the tweet limit. (I did lower left since that's in the current mobile app)
+- [x] Replies should be prefixed with the username and the reply_id should be set when posting the tweet,
+
 
 
 ## Video Walkthrough 
