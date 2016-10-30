@@ -16,6 +16,7 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var tweetLabel: UILabel!
     @IBOutlet weak var createdAtString: UILabel!
     
+    @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var retweetHandleLabel: UILabel!
     @IBOutlet weak var retweetAction: UIImageView!
     
@@ -39,14 +40,14 @@ class DetailViewController: UIViewController {
             profileImageView.setImageWith(url!)
             userNameLabel.text = tweet!.user!.name
             userHandleLabel.text = tweet!.user!.screenname
-            createdAtString.text = tweet!.createdAtString
+            createdAtString.text = tweet!.getCreation()
             
             if let retweet = tweet?.retweetedByHandleString {
                 retweetHandleLabel.text = "\(retweet) Retweeted"
                 retweetAction.image = UIImage(named: "retweetActionOn")
+                headerView.isHidden = false
             } else {
-                retweetHandleLabel.text = "No Retweeted"
-                retweetAction.image = UIImage(named: "retweetAction")
+                headerView.isHidden = true
             }
             
             let attrTweetText = NSMutableAttributedString(string: tweet!.text!)

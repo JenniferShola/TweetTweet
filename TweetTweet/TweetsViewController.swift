@@ -94,7 +94,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
                 setButtonImage(button: cell.favoriteActionButton, imageName: "favoriteAction")
             }
             
-            //cell.timeLabel.text = tweet.createdAtString!
+            cell.timeLabel.text = tweet.getActivitySince()!
             
             let url = URL(string: "\(tweet.user!.profileImageUrl!)")
             cell.profileImage.setImageWith(url!)

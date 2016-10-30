@@ -21,7 +21,7 @@ class Tweet: NSObject {
     
     var profileUrl: String?
     
-    var createdAt: NSDate?
+    var createdAt: Date?
     var createdAtString: String?
     
     var favorited = false
@@ -30,6 +30,10 @@ class Tweet: NSObject {
     var retweetCount: Int?
     
     var formatter = DateFormatter()
+    var formatterShort = DateFormatter()
+    
+    let calendar = Calendar.current
+    let unitFlags = Set([Calendar.Component.year, Calendar.Component.weekOfYear, Calendar.Component.month, Calendar.Component.day, Calendar.Component.hour, Calendar.Component.minute, Calendar.Component.second]) as Set<Calendar.Component>
     
     init(dictionary: NSDictionary) {
         if let retweetedStatus = dictionary["retweeted_status"] as? NSDictionary {
@@ -60,7 +64,8 @@ class Tweet: NSObject {
         }
         
         formatter.dateFormat = "EEE MMM d HH:mm:ss Z y"
-        createdAt = formatter.date(from: createdAtString!) as NSDate?
+        formatterShort.dateFormat = "M/d/yy h:mma"
+        createdAt = formatter.date(from: createdAtString!) as Date?
     }
     
     class func tweetsWithArray(array: [NSDictionary]) -> [Tweet] {
@@ -135,9 +140,30 @@ class Tweet: NSObject {
         }
     }
     
-    func getLongReadableDate(){
-        formatter.dateFormat = "EEE MMM d HH:mm:ss Z y"
-        createdAt = formatter.date(from: createdAtString!) as NSDate?
+    func getCreation() -> String? {
+        return formatterShort.string(from: createdAt!)
+    }
+    
+    func getActivitySince() -> String? {
+        let components:DateComponents = calendar.dateComponents(unitFlags, from: createdAt!, to: Date())
+        
+        if (components.year! >= 1) {
+            return "\(components.year!)y"
+        } else if (components.month! >= 2) {
+            return "\(components.month!)m"
+        } else if (components.weekOfYear! >= 1) {
+            return "\(components.weekOfYear!)w"
+        } else if (components.day! >= 1) {
+            return "\(components.day!)d"
+        } else if (components.hour! >= 1) {
+            return "\(components.hour!)h"
+        } else if (components.minute! >= 1) {
+            return "\(components.minute!)m"
+        } else if (components.second! >= 1) {
+            return "\(components.second!)s"
+        }
+        
+        return "0s"
     }
     
     func updateTweetValues(dictionary: NSDictionary) {
@@ -164,7 +190,7 @@ class Tweet: NSObject {
             self.createdAtString = dictionary["created_at"] as? String
         }
         
-        createdAt = formatter.date(from: createdAtString!) as NSDate?
+        createdAt = formatter.date(from: createdAtString!) as Date?
     }
 
 }

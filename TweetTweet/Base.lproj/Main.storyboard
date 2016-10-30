@@ -551,6 +551,7 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
                         <outlet property="createdAtString" destination="Z8c-Qo-TLm" id="WEu-Wk-mfl"/>
+                        <outlet property="headerView" destination="uwX-OZ-YzF" id="0UO-zJ-iNC"/>
                         <outlet property="likeCountLabel" destination="HiP-Tj-4db" id="ilD-FG-eeI"/>
                         <outlet property="profileImageView" destination="Xh8-rV-W8o" id="RdI-Fr-0We"/>
                         <outlet property="retweetAction" destination="S7i-tf-9KC" id="05I-Ij-fmC"/>
