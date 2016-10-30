@@ -5,7 +5,7 @@ Homework 3! Codepath Twitter Demo Client
 
 **TweetTweet App** is a prototype of the Twitter app using the [Twitter API](https://dev.twitter.com/overview/api).
 
-Time spent: **15** hours spent in total
+Time spent: **21** hours spent in total
 
 ## User Stories
 
@@ -51,7 +51,7 @@ tweet.unretweet(completion: { (newTweet, error) in
 ```
 But I realized that I wanted to alter the `tweet` object with data I received from the completion. It seemed to update `newTweet` but the original `tweet` I used to call `tweet.unretweet` didn't update. Or at least it's internal value didn't change when I was observed at the end of the completion.
 
-I did have some ininital difficulty with how to understand hiding and showing the SoAndSo Retweeted at the top if a retweet in combination with AutoLayout. 
+I did have some ininital difficulty with how to understand hiding and showing the Name Retweeted at the top if a retweet in combination with AutoLayout. I ended up having to redo my layout with StackView multiple times, first solely with Autolayout, then Stack View and Autolayout, then finally with nested views inside of a Stack View.
 
 
 ## License
