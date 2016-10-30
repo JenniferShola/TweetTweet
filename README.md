@@ -29,6 +29,7 @@ The following **optional** features are implemented:
 - [x] User can pull to refresh only grabs the latest tweets the user has seen (not sure if this was originally required)
 - [x] Retweeting and favoriting should increment the retweet and favorite count.
 - [x] User should be able to unretweet and unfavorite and should decrement the retweet and favorite count.
+- [x] Also added styling so color changes as user retweet/unretweet and favorite/unfavorite.
 - [x] Retweet and favorite count are formatted based on the count (i.e. 15k on the timeline view vs 15,821 on the detailed expansion, etc).
 - [ ] When composing, you should have a countdown in the upper right for the tweet limit.
 - [ ] After creating a new tweet, a user should be able to view it in the timeline immediately without refetching the timeline from the network.
