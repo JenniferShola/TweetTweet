@@ -5,7 +5,7 @@ Homework 3! Codepath Twitter Demo Client
 
 **TweetTweet App** is a prototype of the Twitter app using the [Twitter API](https://dev.twitter.com/overview/api).
 
-Time spent: **25** hours spent in total
+Time spent: **26** hours spent in total
 
 ## User Stories
 
@@ -23,10 +23,13 @@ The following **required** functionality is completed:
 The following **optional** features are implemented:
 
 - [x] Added images so that photo media shows up when included in a tweet. Also removes the original url link from the text link.
+- [x] Refactored tweet text to use NSMutableAttributedString and added styling for any user mentions or hashtags.
+- [x] Replace links in tweet text with their displayable text and added styling
 - [x] User can load more tweets once they reach the bottom of the feed using infinite loading similar to the actual Twitter client.
 - [x] User can pull to refresh only grabs the latest tweets the user has seen (not sure if this was originally required)
 - [x] Retweeting and favoriting should increment the retweet and favorite count.
 - [x] User should be able to unretweet and unfavorite and should decrement the retweet and favorite count.
+- [x] Retweet and favorite count are formatted based on the count (i.e. 15k on the timeline view vs 15,821 on the detailed expansion, etc).
 - [ ] When composing, you should have a countdown in the upper right for the tweet limit.
 - [ ] After creating a new tweet, a user should be able to view it in the timeline immediately without refetching the timeline from the network.
 - [ ] Replies should be prefixed with the username and the reply_id should be set when posting the tweet,
@@ -42,20 +45,18 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-This went way smoother for me in terms of development. It took me quite some time to get through the OAuth videos. I had a few misunderstandings about how that fit together and how to probably set up my accessToken.
+This went way smoother for me in terms of development. It took me quite some time to get through the OAuth videos. I initiually had a few misunderstandings about how that fit together and how to probably set up my accessToken but I feel like I really learned iOS this week. Before, I kinda understood what was going on but this week, I felt more in control of what I was working on and I constantly refactored.  
 
-I also initially had trouble with completions. My autocomplete has been pretty finicky in xcode so understanding the syntax and trying to make it work, soaked up more time than it should. I also had an issue here I wrote something like this
-```
-tweet.unretweet(completion: { (newTweet, error) in
-  if error != nil {
-    self.retweetActionButton.setBackgroundImage(UIImage(named: "retweetActionOn"), for: UIControlState.normal)
-  }
-})
-```
-But I realized that I wanted to alter the `tweet` object with data I received from the completion. It seemed to update `newTweet` but the original `tweet` I used to call `tweet.unretweet` didn't update. Or at least it's internal value didn't change when I was observed at the end of the completion.
+I also initially had trouble with completions. My autocomplete has been pretty finicky in xcode so understanding the syntax and trying to make it work, soaked up more time than it should.
 
 I did have some ininital difficulty with how to understand hiding and showing the Name Retweeted at the top if a retweet in combination with AutoLayout. I ended up having to redo my layout with StackView multiple times, first solely with Autolayout, then Stack View and Autolayout, then finally with nested views inside of a Stack View.
 
+I spent more time than anticipated trying to replace the original url with its readable format and then coloring it in. I ended up reordering some of the steps but I spent more time then I originally expected given that user_mentions and hashtags were a similar concept I finished before implementing this.
+
+## Questions
+
+How do I make helper methods that an object's init class can use?
+How do I create like a global helper class that has methods I'd like to use across the project? 
 
 ## License
 
