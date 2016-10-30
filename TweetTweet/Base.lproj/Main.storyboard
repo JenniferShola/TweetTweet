@@ -104,16 +104,8 @@
                         <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XIO-ZZ-76P">
-                                <frame key="frameInset" minX="16" minY="565" width="48" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Logout"/>
-                                <connections>
-                                    <action selector="onLogout:" destination="Paq-U1-9M7" eventType="touchUpInside" id="6Q8-Kk-JvX"/>
-                                </connections>
-                            </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="327" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="6fD-xN-5hJ">
-                                <frame key="frameInset" width="375" height="557"/>
+                                <frame key="frameInset" width="375" height="603"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -343,6 +335,12 @@
                     </view>
                     <navigationItem key="navigationItem" id="Yjl-z2-wPQ">
                         <barButtonItem key="backBarButtonItem" title=" " id="T63-Wl-WQd"/>
+                        <barButtonItem key="leftBarButtonItem" id="Le1-p7-uey">
+                            <color key="tintColor" red="0.1647058824" green="0.63921568630000003" blue="0.93725490199999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <connections>
+                                <action selector="onLogout:" destination="Paq-U1-9M7" id="Sd1-KP-9xI"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="6fD-xN-5hJ" id="7v8-c9-04A"/>
@@ -658,4 +656,5 @@
         <image name="replyAction" width="65" height="72"/>
         <image name="retweetAction" width="75" height="72"/>
     </resources>
+    <color key="tintColor" red="0.0" green="0.56092701342281892" blue="0.92941176470588238" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>

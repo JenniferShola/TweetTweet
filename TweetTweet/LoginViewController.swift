@@ -10,24 +10,27 @@ import UIKit
 import BDBOAuth1Manager
 
 class LoginViewController: UIViewController {
+    
+    let alertController = UIAlertController(title: "Title", message: "Message", preferredStyle: .alert)
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        let OKAction = UIAlertAction(title: "OK", style: .default)
+        alertController.addAction(OKAction)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     @IBAction func onLogin(_ sender: AnyObject) {
-        TwitterClient.sharedInstance.loginWithCompletion() { (user: User?, error: Error?) in
+        User.login { (user, error) in
             if user != nil {
                 self.performSegue(withIdentifier: "loginSegue", sender: nil)
-                //perform segue
             } else {
-                //handle login error
+                self.alertController.message = "Please try again."
+                self.present(self.alertController, animated: true) {}
             }
         }
     }

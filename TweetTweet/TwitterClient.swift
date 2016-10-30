@@ -85,15 +85,11 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
             callbackURL: URL(string: "shola://oauth"),
             scope: nil,
             success: { (requestToken: BDBOAuth1Credential?) -> Void in
-                print("got request token: \(requestToken!.debugDescription)")
-                print("token: \(requestToken!.token!)")
-                print("secret: \(requestToken!.secret!)")
                 let authURL = URL(string: "https://api.twitter.com/oauth/authorize?oauth_token=\(requestToken!.token!)")
                 print("url: \(authURL)")
                 UIApplication.shared.open(authURL!)
         },
         failure: { (error: Error?) -> Void in
-            print("failed to get request token error: \(error!.localizedDescription)")
             self.loginCompletion!(nil, error)
         })
     }
@@ -103,9 +99,6 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
                          method: "POST",
                          requestToken: BDBOAuth1Credential (queryString: url.query),
                          success: { (accessToken: BDBOAuth1Credential?) -> Void in
-                            print("got access token: \(accessToken!.debugDescription)")
-                            print("token: \(accessToken!.token!)")
-                            print("secret: \(accessToken!.secret!)")
                             TwitterClient.sharedInstance.requestSerializer.saveAccessToken(accessToken)
                             
                             TwitterClient.sharedInstance.get("1.1/account/verify_credentials.json", parameters: nil,
@@ -118,7 +111,6 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
                                     
                                 }, failure: { (operation, error) in
                                     print("ERROR getting current user")
-                                    
                                     self.loginCompletion!(nil, error)
                             })
                             

@@ -35,6 +35,16 @@ class User: NSObject {
         NotificationCenter.default.post(name: userDidLogoutNotification, object: nil)
     }
     
+    class func login(completion: @escaping (_ user: User?, _ error: Error?) -> ()) {
+        TwitterClient.sharedInstance.loginWithCompletion() { (user: User?, error: Error?) in
+            if user != nil {
+                completion(user, nil)
+            } else {
+                completion(nil, error)
+            }
+        }
+    }
+    
     class var currentUser: User? {
         get {
             if _currentUser == nil {
@@ -68,8 +78,9 @@ class User: NSObject {
                 UserDefaults.standard.set(nil, forKey: currentUserKey)
             }
             UserDefaults.standard.synchronize()
-
         }
     }
+    
+    
 
 }

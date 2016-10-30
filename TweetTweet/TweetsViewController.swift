@@ -10,13 +10,13 @@ import UIKit
 
 class TweetsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate  {
 
-    var titleView = UIImageView(frame:CGRect(x: 0, y: 0, width: 40, height: 35))
+    var titleView = UIImageView(frame:CGRect(x: 0, y: 0, width: 45, height: 40))
+    var rightBarView = UIImageView(frame:CGRect(x: 0, y: 0, width: 40, height: 34))
     let paragraphStyle = NSMutableParagraphStyle()
     var isMoreDataLoading = false
     var tweets: [Tweet?]?
-    var since_id = 0    // Returns results with an ID greater than (that is, more recent than) the specified ID.
-    var max_id = 0      // Returns results with an ID less than (that is, older than) or equal to the specified ID.
-    
+    var since_id = 0    // To return results with an ID greater than (more recent than) the specified ID.
+    var max_id = 0      // To return results with an ID less than (older than) or equal to the specified ID.
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -37,8 +37,14 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         
         titleView.contentMode = .scaleAspectFit
         titleView.image = UIImage(named: "Twitter_Logo_Blue")
-
-        self.navigationItem.titleView = titleView;
+        
+        rightBarView.contentMode = .scaleAspectFit
+        rightBarView.image = UIImage(named: "composeIcon")
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBarView)
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "logoutIcon"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(onLogout))
+        
+        self.navigationItem.titleView = titleView
         self.navigationController?.navigationBar.sizeToFit()
         
         TwitterClient.sharedInstance.homeTimeline(params: nil) { (tweets, error) in
@@ -98,6 +104,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         let detailViewController = segue.destination as! DetailViewController
         detailViewController.tweet = tweet
     }
+    
     
     func refreshControlAction(_ refreshControl: UIRefreshControl) {
         TwitterClient.sharedInstance.homeTimeline(params: formatTimelineParams(key: "since_id", value: since_id)) { (newTweets, error) in
@@ -174,8 +181,6 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     }
 
     @IBAction func onLogout(_ sender: AnyObject) {
-        print("GOT TO LOGOUT")
-        print("MY USER's NAME IS \(User.currentUser?.name)")
         User.currentUser?.logout()
     }
 

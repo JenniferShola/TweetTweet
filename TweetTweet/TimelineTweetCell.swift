@@ -74,7 +74,6 @@ class TimelineTweetCell: UITableViewCell {
                     self.tweet.favoriteCount = c-1
                 }
             })
-
         }
     }
     
@@ -109,6 +108,5 @@ class TimelineTweetCell: UITableViewCell {
                 }
             })
         }
-        
     }
 }
