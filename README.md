@@ -41,7 +41,7 @@ Here's a walkthrough of implemented user stories:
 
 ![Video Walkthrough](tweet3.gif) ![Video Walkthrough](tweet.gif)
 
-I kept getting rate limited so I'm just gna show one of the walkthroughs. tweet4.gif is the most recent version but it doesn't show all the functionality due to rate limiting. :/
+I kept getting rate limited so I'm just gna show two of the walkthroughs. There were (alot of) updates and fixes since I recorded the one on the right but it's a good walkthrough and my later gifs don't have everything in it because it got hard with the rate limiting.  :/
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
