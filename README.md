@@ -31,6 +31,7 @@ The following **optional** features are implemented:
 - [x] Retweet and favorite count are formatted based on the count (i.e. 15k on the timeline view vs 15,821 on the detailed expansion, etc).
 - [x] When composing, you should have a countdown in the upper right for the tweet limit. (I did lower left since that's in the current mobile app)
 - [x] Replies should be prefixed with the username and the reply_id should be set when posting the tweet,
+- [x] Made my own icons (compose icon and cross exit) that used global tint to get the twitter blue color. 
 
 
 
@@ -39,6 +40,8 @@ The following **optional** features are implemented:
 Here's a walkthrough of implemented user stories:
 
 ![Video Walkthrough](tweet3.gif)
+
+![Video Walkthrough](tweet.gif)
 
 I kept getting rate limited so I'm just gna show one of the walkthroughs. tweet4.gif is the most recent version but it doesn't show all the functionality due to rate limiting. :/
 
