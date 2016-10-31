@@ -1,5 +1,3 @@
-**This repo is a work in progress. I am updating this incrementally.** 
-
 # TweetTweet
 Homework 3! Codepath Twitter Demo Client
 
@@ -40,7 +38,9 @@ The following **optional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-![Video Walkthrough](tweet.gif)
+![Video Walkthrough](tweet3.gif)
+
+I kept getting rate limited so I'm just gna show one of the walkthroughs. tweet4.gif is the most recent version but it doesn't show all the functionality due to rate limiting. :/
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
@@ -56,6 +56,7 @@ I spent more time than anticipated trying to replace the original url with its r
 
 ## Questions
 
+What's the best way to refactor common code in ios?
 How do I make helper methods that an object's init class can use?
 How do I create like a global helper class that has methods I'd like to use across the project? 
 
