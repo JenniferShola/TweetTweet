@@ -39,9 +39,7 @@ The following **optional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-![Video Walkthrough](tweet3.gif)
-
-![Video Walkthrough](tweet.gif)
+![Video Walkthrough](tweet3.gif) ![Video Walkthrough](tweet.gif)
 
 I kept getting rate limited so I'm just gna show one of the walkthroughs. tweet4.gif is the most recent version but it doesn't show all the functionality due to rate limiting. :/
 
