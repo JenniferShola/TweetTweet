@@ -148,8 +148,31 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
             cell.profileNameLabel.text = tweet.user!.name!
             cell.tweet = tweet
             
-            cell.favoriteCountLabel.text = tweet.favoriteCountString(short: true)!
-            cell.retweetsCountLabel.text = tweet.retweetCountString(short: true)!
+            let favoriteText = tweet.favoriteCountString(short: true)!
+            if tweet.favorited == true {
+                let attributeText = NSMutableAttributedString(string: favoriteText)
+                let range = (favoriteText as NSString!).range(of: favoriteText)
+                attributeText.addAttribute(NSForegroundColorAttributeName, value: Helper.sharedInstance.twitterPink(), range: range)
+                cell.favoriteCountLabel.attributedText = attributeText
+            } else {
+                let attributeText = NSMutableAttributedString(string: favoriteText)
+                let range = (favoriteText as NSString!).range(of: favoriteText)
+                attributeText.addAttribute(NSForegroundColorAttributeName, value: Helper.sharedInstance.twitterGray(), range: range)
+                cell.favoriteCountLabel.attributedText = attributeText
+            }
+            
+            let retweetText = tweet.retweetCountString(short: true)!
+            if tweet.retweeted == true {
+                let attributeText = NSMutableAttributedString(string: retweetText)
+                let range = (retweetText as NSString!).range(of: retweetText)
+                attributeText.addAttribute(NSForegroundColorAttributeName, value: Helper.sharedInstance.twitterPink(), range: range)
+                cell.favoriteCountLabel.attributedText = attributeText
+            } else {
+                let attributeText = NSMutableAttributedString(string: retweetText)
+                let range = (retweetText as NSString!).range(of: retweetText)
+                attributeText.addAttribute(NSForegroundColorAttributeName, value: Helper.sharedInstance.twitterGray(), range: range)
+                cell.retweetsCountLabel.attributedText = attributeText
+            }
             
             tweet.attributeText!.addAttribute(NSParagraphStyleAttributeName, value:paragraphStyle, range:NSMakeRange(0, tweet.attributeText!.length))
             cell.tweetTextLabel.attributedText = tweet.attributeText!
