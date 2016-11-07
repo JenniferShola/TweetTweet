@@ -25,12 +25,54 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
         return Static.instance!
     }
     
+    func showUser(screen_name: String?, params: NSDictionary?, completion: @escaping (_ user: User?, _ error: Error?) -> ()){
+        get("1.1/users/show.json?screen_name=\(screen_name!)", parameters: params, success: { (operation, response) in
+            let usr = User.init(dictionary: response as! NSDictionary)
+            completion(usr, nil)
+        }) { (operation, error) in
+            print("ERROR getting current home TL: \(error.localizedDescription)")
+            completion(nil, error)
+        }
+    }
+    
+    func userProfile(params: NSDictionary?, completion: @escaping (_ user: User?, _ error: Error?) -> ()){
+        get("1.1/users/show.json", parameters: params, success: { (operation, response) in
+            let usr = User.init(dictionary: response as! NSDictionary)
+            completion(usr, nil)
+            }, failure: { (operation, error) in
+                print("ERROR getting current home TL: \(error.localizedDescription)")
+                completion(nil, error)
+        })
+    }
+    
     func homeTimeline(params: NSDictionary?, completion: @escaping (_ tweets: [Tweet]?, _ error: Error?) -> ()){
         get("1.1/statuses/home_timeline.json", parameters: params, success: { (operation, response) in
             let tweets = Tweet.tweetsWithArray(array: response as! [NSDictionary])
             completion(tweets, nil)
+            }, failure: { (operation, error) in
+                print("ERROR getting current home TL: \(error.localizedDescription)")
+                completion(nil, error)
+        })
+    }
+    
+    func mentionsTimeline(params: NSDictionary?, completion: @escaping (_ tweets: [Tweet]?, _ error: Error?) -> ()){
+        get("1.1/statuses/mentions_timeline.json", parameters: params, success: { (operation, response) in
+            print("Here is the response: \(response)")
+            let tweets = Tweet.tweetsWithArray(array: response as! [NSDictionary])
+            print("Here are the tweets: \(tweets)")
+            completion(tweets, nil)
         }, failure: { (operation, error) in
-            print("ERROR getting current home TL: \(error.localizedDescription)")
+            print("ERROR getting current mentions TL: \(error.localizedDescription)")
+            completion(nil, error)
+        })
+    }
+    
+    func userTimeline(params: NSDictionary?, completion: @escaping (_ tweets: [Tweet]?, _ error: Error?) -> ()){
+        get("1.1/statuses/user_timeline.json", parameters: params, success: { (operation, response) in
+            let tweets = Tweet.tweetsWithArray(array: response as! [NSDictionary])
+            completion(tweets, nil)
+        }, failure: { (operation, error) in
+            print("ERROR getting current user TL: \(error.localizedDescription)")
             completion(nil, error)
         })
     }
@@ -61,9 +103,9 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
         
         post("1.1/statuses/\(endpoint!)/\(params.value(forKey: "id_str") as! String).json", parameters: params, success: { (operation, response) in
             completion((response as! NSDictionary), nil)
-            }, failure: { (operation, error) in
-                print("ERROR retweeting tweet: \(error.localizedDescription)")
-                completion(nil, error)
+        }, failure: { (operation, error) in
+            print("ERROR retweeting tweet: \(error.localizedDescription)")
+            completion(nil, error)
         })
     }
     
@@ -73,9 +115,9 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
         
         post("1.1/statuses/update.json", parameters: params, success: { (operation, response) in
             completion((response as! NSDictionary), nil)
-            }, failure: { (operation, error) in
-                print("ERROR composing tweet: \(error.localizedDescription)")
-                completion(nil, error)
+        }, failure: { (operation, error) in
+            print("ERROR composing tweet: \(error.localizedDescription)")
+            completion(nil, error)
         })
     }
     

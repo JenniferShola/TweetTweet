@@ -17,6 +17,8 @@ class Tweet: NSObject {
     
     var text: String?
     var handle: String?
+    var reply_to: String?
+    var reply_to_name: String?
     var retweetedByScreenName: String?
     var retweetedByHandleString: String?
     var attributeText: NSMutableAttributedString?
@@ -35,7 +37,7 @@ class Tweet: NSObject {
     var mediaImageUrl: URL!
     
     var user_mentions_included = false
-     
+    
     init(dictionary: NSDictionary) {
         var entitiesDictionary: NSDictionary?
         var diction = dictionary
@@ -98,12 +100,23 @@ class Tweet: NSObject {
                 }
             }
         }
-                
+        
+        if let mention = diction["in_reply_to_screen_name"] as? String? {
+            reply_to =  mention
+            
+            
+        }
         // Add user_mentions to colorables
         var colorables = [String?]()
         if let user_mentions = entitiesDictionary?.value(forKey: "user_mentions") as? [NSDictionary?] {
             for mention in user_mentions {
                 colorables.append("@\(mention!.value(forKey: "screen_name")!)")
+                if reply_to != nil {
+                    let sn = mention!.value(forKey: "screen_name") as! String?
+                    if sn == reply_to {
+                        reply_to_name = mention!.value(forKey: "name") as! String?
+                    }
+                }
             }
         }
         
@@ -209,6 +222,10 @@ class Tweet: NSObject {
     
     func getCreation() -> String? {
         return Helper.sharedInstance.formatDate(truncated: true, date: createdAt)
+    }
+    
+    func getShortCreation() -> String? {
+        return Helper.sharedInstance.formatDate(truncated: nil, date: createdAt)
     }
     
     func getActivitySince() -> String? {

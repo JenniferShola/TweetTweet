@@ -19,6 +19,7 @@ class Helper: NSObject {
     
     var formatter = DateFormatter()
     var formatterShort = DateFormatter()
+    var formatterSubShort = DateFormatter()
     let numberFormatter = NumberFormatter()
     
     let calendar = Calendar.current
@@ -28,10 +29,13 @@ class Helper: NSObject {
         numberFormatter.numberStyle = NumberFormatter.Style.decimal
         formatter.dateFormat = "EEE MMM d HH:mm:ss Z y"
         formatterShort.dateFormat = "M/d/yy h:mma"
+        formatterSubShort.dateFormat = "MMM d"
     }
     
-    func formatDate(truncated: Bool, date: Date?) -> String? {
-        if truncated == true {
+    func formatDate(truncated: Bool?, date: Date?) -> String? {
+        if truncated == nil {
+            return formatterSubShort.string(from: date!)
+        } else if truncated == true {
             return formatterShort.string(from: date!)
         } else {
             return formatter.string(from: date!)

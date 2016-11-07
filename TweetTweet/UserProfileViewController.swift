@@ -1,97 +1,110 @@
+
 //
-//  TweetsViewController.swift
+//  UserProfileViewController.swift
 //  TweetTweet
 //
-//  Created by Shola Oyedele on 10/27/16.
+//  Created by Shola Oyedele on 11/1/16.
 //  Copyright © 2016 Jennifer Shola. All rights reserved.
 //
 
 import UIKit
 
-class TweetsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate  {
+class UserProfileViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate  {
 
-    var titleView = UIImageView(frame:CGRect(x: 0, y: 0, width: 45, height: 40))
-    let paragraphStyle = NSMutableParagraphStyle()
-    var isMoreDataLoading = false
-    var userTweets: [Tweet?] = []
-    var tweets: [Tweet?]?
-    var since_id = 0    // To return results with an ID greater than (more recent than) the specified ID.
-    var max_id = 0      // To return results with an ID less than (older than) or equal to the specified ID.
+    @IBOutlet weak var headerPhoto: UIImageView!
+    @IBOutlet weak var userProfileImageView: UIImageView!
+    
+    @IBOutlet weak var userNameLabel: UILabel!
+    @IBOutlet weak var userHandleLabel: UILabel!
+    @IBOutlet weak var profileDescriptionLabel: UILabel!
+    
+    @IBOutlet weak var profileLocationLabel: UILabel!
+    @IBOutlet weak var profileUrlLabel: UILabel!
+    @IBOutlet weak var profileAgeLabel: UILabel!
+    
+    @IBOutlet weak var followingLabel: UILabel!
+    @IBOutlet weak var followersLabel: UILabel!
     
     @IBOutlet weak var tableView: UITableView!
     
+    var user: User?
+    var user_id: Int?
+    var screen_name: String?
+    var tweets: [Tweet?] = []
+    var isMoreDataLoading = false
+    var since_id = 0    // To return results with an ID greater than (more recent than) the specified ID.
+    var max_id = 0      // To return results with an ID less than (older than) or equal to the specified ID.
+    
     override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        paragraphStyle.lineSpacing = 2.5
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(refreshControlAction(_:)), for: UIControlEvents.valueChanged)
-        tableView.insertSubview(refreshControl, at: 0)
+        if user == nil {
+            user = User.currentUser
+        }
         
         tableView.delegate = self
         tableView.dataSource = self
+        
+        resetTweetsToUserTimeline()
+        self.tableView.reloadData()
+        super.viewDidLoad()
+        
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refreshControlAction(_:)), for: UIControlEvents.valueChanged)
+        tableView.insertSubview(refreshControl, at: 0)
+
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 120
         
-        self.tableView.reloadData()
+        self.userProfileImageView.setImageWith(URL(string: user!.profileImageUrl!)!)
         
-        titleView.contentMode = .scaleAspectFit
-        titleView.image = UIImage(named: "Twitter_Logo_Blue")
+        if let header = user!.profileHeaderUrl {
+            self.headerPhoto.setImageWith(URL(string: header)!)
+            self.headerPhoto.isHidden = false
+        } else {
+            self.headerPhoto.isHidden = true
+        }
         
-        //self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBarView)
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "logoutIcon"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(onLogout))
+        if let url = user!.profileHeaderUrl {
+            self.profileUrlLabel.text = "\(url)"
+            self.profileUrlLabel.isHidden = false
+        } else {
+            self.profileUrlLabel.isHidden = true
+        }
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "composeIcon"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(onCompose))
         
-        self.navigationItem.titleView = titleView
-        self.navigationController?.navigationBar.sizeToFit()
+        self.userNameLabel.text = user!.name
+        self.userHandleLabel.text = user!.screenname!
+        self.profileDescriptionLabel.text = user!.tagline
         
-        TwitterClient.sharedInstance.homeTimeline(params: nil) { (tweets, error) in
-            let length = tweets?.count ?? 0
-            
-            self.tweets = tweets
-            self.tableView.reloadData()
-            
-            if length == 1 {
-                self.since_id = (self.tweets?[0]!.id)!
-                self.max_id = (self.tweets![0]!.id)!
-            } else if length > 1 {
-                self.since_id = (self.tweets?[0]!.id)!
-                self.max_id = (self.tweets![length-1]!.id)!
+        self.profileLocationLabel.text = "\(user!.location!)"
+        
+        self.followersLabel.text = "\(user!.followers!)"
+        self.followingLabel.text = "\(user!.following!)"
+        
+        // Do any additional setup after loading the view.
+    }
+    
+    func resetTweetsToUserTimeline() {
+        let keys = ["user_id"]
+        let params = NSDictionary.init(objects: [user!.id!], forKeys: keys as [NSCopying])
+        TwitterClient.sharedInstance.userTimeline(params: params) { (newTweets, error) in
+            if let twits = newTweets {
+                self.tweets = twits
+                self.tableView.reloadData()
             }
         }
     }
     
-    func formatTimelineParams(key: String?, value: Int?) -> NSDictionary{
-        let keys = [key!]
-        let params = NSDictionary.init(objects: [value!], forKeys: keys as [NSCopying])
+    func formatUserParams(name: String?, user_id: Int?) -> NSDictionary{
+        let keys = ["screen_name", "user_id"]
+        let params = NSDictionary.init(objects: [name!, user_id!], forKeys: keys as [NSCopying])
         return params
     }
     
-    func finishedComposing() {
-        self.tableView.reloadData()
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "composeSegue" {
-            let navigationViewController = segue.destination as! UINavigationController
-            let composeViewController = navigationViewController.topViewController as!ComposeViewController
-            composeViewController.tweets = self.tweets!
-        } else if segue.identifier == "seeUserSegue" {
-            print("\((sender as? UIButton)?.currentTitle)")
-            print("\((sender as? TimelineTweetCell).debugDescription)")
-            let userViewController = segue.destination as! UserProfileViewController
-            userViewController.screen_name = (sender as? UIButton)!.titleLabel?.text!
-            userViewController.user = tweets![(sender as? UIButton)!.tag]?.user
-            
-        } else {
-            let cell = sender as! TimelineTweetCell!
-            let indexPath = tableView.indexPath(for: cell!)
-            let tweet = tweets![(indexPath! as NSIndexPath).row]
-            
-            let detailViewController = segue.destination as! DetailViewController
-            detailViewController.tweet = tweet
-        }
+    
+    func formatUserTimelineParams() -> NSDictionary{
+        let keys = ["max_id", "id"]
+        let params = NSDictionary.init(objects: [max_id, user!.id], forKeys: keys as [NSCopying])
+        return params
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -102,16 +115,16 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
             if(scrollView.contentOffset.y > scrollOffsetThreshold && tableView.isDragging) {
                 isMoreDataLoading = true
                 
-                TwitterClient.sharedInstance.homeTimeline(params: formatTimelineParams(key: "max_id", value: max_id)) { (newTweets, error) in
+                TwitterClient.sharedInstance.userTimeline(params: formatUserTimelineParams()) { (newTweets, error) in
                     if let twits = newTweets {
                         for t in twits {
                             if (t.id != self.max_id) {
-                                self.tweets!.append(t)
+                                self.tweets.append(t)
                             }
                         }
                         
-                        let length = self.tweets?.count ?? 0
-                        self.max_id = (self.tweets![length-1]?.id)!
+                        let length = self.tweets.count
+                        self.max_id = (self.tweets[length-1]?.id)!
                         
                         self.isMoreDataLoading = false
                         self.tableView.reloadData()
@@ -124,13 +137,13 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func refreshControlAction(_ refreshControl: UIRefreshControl) {
-        TwitterClient.sharedInstance.homeTimeline(params: formatTimelineParams(key: "since_id", value: since_id)) { (newTweets, error) in
+        TwitterClient.sharedInstance.userTimeline(params: formatUserTimelineParams()) { (newTweets, error) in
             if let twits = newTweets {
                 for t in twits.reversed() {
-                    self.tweets!.insert(t, at: 0)
+                    self.tweets.insert(t, at: 0)
                 }
                 
-                self.since_id = (self.tweets![0]?.id)!
+                self.since_id = (self.tweets[0]?.id)!
                 
                 self.isMoreDataLoading = false
                 self.tableView.reloadData()
@@ -138,11 +151,16 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
             refreshControl.endRefreshing()
         }
     }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "timelineTweet") as! TimelineTweetCell
         
-        if let tweet = self.tweets?[indexPath.row] {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "profileTweet") as! TimelineTweetCell
+        if let tweet = self.tweets[indexPath.row] {
             cell.mediaImageView.image = nil
             if tweet.media_included {
                 cell.mediaImageView.setImageWith(tweet.mediaImageUrl!)
@@ -181,7 +199,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
                 cell.retweetsCountLabel.attributedText = attributeText
             }
             
-            tweet.attributeText!.addAttribute(NSParagraphStyleAttributeName, value:paragraphStyle, range:NSMakeRange(0, tweet.attributeText!.length))
+            //tweet.attributeText!.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range:NSMakeRange(0, tweet.attributeText!.length))
             cell.tweetTextLabel.attributedText = tweet.attributeText!
             
             // TODO: Reorganize body view to allow tweet text to be hidden if needed
@@ -201,23 +219,23 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
             
             let url = URL(string: "\(tweet.user!.profileImageUrl!)")
             cell.profileImageButton.setBackgroundImageFor(UIControlState.normal, with: url!)
-            cell.profileImageButton.titleLabel?.text = tweet.user!.raw_screenname!
-            cell.profileImageButton.tag = indexPath.row
         }
         return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tweets?.count ?? 0
+        return tweets.count
     }
     
 
-    @IBAction func onLogout(_ sender: AnyObject) {
-        User.currentUser?.logout()
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
     }
-    
-    @IBAction func onCompose(_ sender: AnyObject) {
-        performSegue(withIdentifier: "composeSegue", sender: self)
-    }
+    */
 
 }

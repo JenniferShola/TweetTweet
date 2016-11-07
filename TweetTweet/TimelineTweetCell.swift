@@ -10,7 +10,7 @@ import UIKit
 
 class TimelineTweetCell: UITableViewCell {
     
-    @IBOutlet weak var profileImage: UIImageView!
+    @IBOutlet weak var profileImageButton: UIButton!
     @IBOutlet weak var profileNameLabel: UILabel!
     @IBOutlet weak var handleLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!

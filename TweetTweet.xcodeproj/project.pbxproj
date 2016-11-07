@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		48482D7C818AB84205C581A8 /* Pods_TweetTweet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD2E58103031392E3713220D /* Pods_TweetTweet.framework */; };
+		772046971DC96B7E0008D049 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772046961DC96B7E0008D049 /* UserProfileViewController.swift */; };
+		77578AF31DD020EF00B31280 /* HamburgerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77578AF21DD020EF00B31280 /* HamburgerViewController.swift */; };
+		77578AF51DD02C4000B31280 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77578AF41DD02C4000B31280 /* MenuViewController.swift */; };
+		77578AF71DD0314C00B31280 /* MenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77578AF61DD0314C00B31280 /* MenuCell.swift */; };
+		77578AF91DD03E4C00B31280 /* MentionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77578AF81DD03E4C00B31280 /* MentionsViewController.swift */; };
+		77578AFB1DD03F8F00B31280 /* MentionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77578AFA1DD03F8F00B31280 /* MentionCell.swift */; };
 		778162931DC65464001E7794 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778162921DC65464001E7794 /* Helper.swift */; };
 		778162951DC682E9001E7794 /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778162941DC682E9001E7794 /* ComposeViewController.swift */; };
 		7781AE261DC06E60006BBB50 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7781AE251DC06E60006BBB50 /* AppDelegate.swift */; };
@@ -25,6 +31,12 @@
 
 /* Begin PBXFileReference section */
 		51E94105B20EEAEA1DFB048C /* Pods-TweetTweet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TweetTweet.release.xcconfig"; path = "Pods/Target Support Files/Pods-TweetTweet/Pods-TweetTweet.release.xcconfig"; sourceTree = "<group>"; };
+		772046961DC96B7E0008D049 /* UserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
+		77578AF21DD020EF00B31280 /* HamburgerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HamburgerViewController.swift; sourceTree = "<group>"; };
+		77578AF41DD02C4000B31280 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		77578AF61DD0314C00B31280 /* MenuCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuCell.swift; sourceTree = "<group>"; };
+		77578AF81DD03E4C00B31280 /* MentionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MentionsViewController.swift; sourceTree = "<group>"; };
+		77578AFA1DD03F8F00B31280 /* MentionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MentionCell.swift; sourceTree = "<group>"; };
 		778162921DC65464001E7794 /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		778162941DC682E9001E7794 /* ComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
 		7781AE221DC06E60006BBB50 /* TweetTweet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TweetTweet.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -112,6 +124,8 @@
 		7781AE691DC1EDC1006BBB50 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				77578AFA1DD03F8F00B31280 /* MentionCell.swift */,
+				77578AF61DD0314C00B31280 /* MenuCell.swift */,
 				7781AE6A1DC1EDD6006BBB50 /* User.swift */,
 				7781AE6C1DC1EE0F006BBB50 /* Tweet.swift */,
 				7781AE721DC30D49006BBB50 /* TimelineTweetCell.swift */,
@@ -123,6 +137,10 @@
 		7781AE6F1DC29524006BBB50 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				77578AF81DD03E4C00B31280 /* MentionsViewController.swift */,
+				77578AF41DD02C4000B31280 /* MenuViewController.swift */,
+				77578AF21DD020EF00B31280 /* HamburgerViewController.swift */,
+				772046961DC96B7E0008D049 /* UserProfileViewController.swift */,
 				7781AE271DC06E60006BBB50 /* LoginViewController.swift */,
 				7781AE701DC2958D006BBB50 /* TweetsViewController.swift */,
 				7781AE741DC349E3006BBB50 /* DetailViewController.swift */,
@@ -270,15 +288,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77578AF71DD0314C00B31280 /* MenuCell.swift in Sources */,
+				77578AF31DD020EF00B31280 /* HamburgerViewController.swift in Sources */,
 				7781AE731DC30D49006BBB50 /* TimelineTweetCell.swift in Sources */,
 				7781AE6B1DC1EDD6006BBB50 /* User.swift in Sources */,
 				7781AE6D1DC1EE0F006BBB50 /* Tweet.swift in Sources */,
 				7781AE711DC2958D006BBB50 /* TweetsViewController.swift in Sources */,
+				77578AFB1DD03F8F00B31280 /* MentionCell.swift in Sources */,
 				7781AE281DC06E60006BBB50 /* LoginViewController.swift in Sources */,
 				778162951DC682E9001E7794 /* ComposeViewController.swift in Sources */,
+				77578AF91DD03E4C00B31280 /* MentionsViewController.swift in Sources */,
+				77578AF51DD02C4000B31280 /* MenuViewController.swift in Sources */,
 				778162931DC65464001E7794 /* Helper.swift in Sources */,
 				7781AE3C1DC0F109006BBB50 /* TwitterClient.swift in Sources */,
 				7781AE261DC06E60006BBB50 /* AppDelegate.swift in Sources */,
+				772046971DC96B7E0008D049 /* UserProfileViewController.swift in Sources */,
 				7781AE751DC349E3006BBB50 /* DetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -22,10 +22,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if User.currentUser != nil {
             //Go to login screen
             print("CURRENT USER DETECTED WITH NAME: \(User.currentUser?.name)")
-            let vc = storyboard.instantiateViewController(withIdentifier: "TweetsNavigationController") as UIViewController
-            window?.rootViewController = vc
+            
+            let hamburgerVC = storyboard.instantiateViewController(withIdentifier: "HamburgerViewController") as! HamburgerViewController
+            let mvc = storyboard.instantiateViewController(withIdentifier: "MenuViewController") as! MenuViewController
+            
+            mvc.hamburgerViewController = hamburgerVC
+            hamburgerVC.menuViewController = mvc
+            
+            window?.rootViewController = hamburgerVC
+            
         }
         // Override point for customization after application launch.
+        
+        
         return true
     }
     
