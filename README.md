@@ -1,6 +1,42 @@
-**This repo is a work in progress. I am updating this incrementally.** 
+# TweetTweet - Assigment 4 Submission
+Homework 4! Codepath Twitter Redux Demo Client
 
-# TweetTweet
+**TweetTweet App** is a prototype of the Twitter app using the [Twitter API](https://dev.twitter.com/overview/api).
+
+Time spent: **12** hours spent in total
+
+## User Stories
+
+The following **required** functionality is completed:
+
+- [x] Hamburger menu
+  - [x] Dragging anywhere in the view should reveal the menu.
+  - [x] The menu should include links to your profile, the home timeline, and the mentions view.
+
+- [x] Profile page
+  - [x] Contains the user header view
+  - [x] Contains a section with the users basic stats: # tweets, # following, # followers
+  - [x] Shows the user timeline
+
+- [x] Home Timeline
+  - [x] Tapping on a user image should bring up that user's profile page
+
+## Video Walkthrough 
+
+Here's a walkthrough of implemented user stories:
+
+![Video Walkthrough](redux.gif)
+
+I kept getting rate limited so I'm just gna show two of the walkthroughs. There were (alot of) updates and fixes since I recorded the one on the right but it's a good walkthrough and my later gifs don't have everything in it because it got hard with the rate limiting.  :/
+
+GIF created with [LiceCap](http://www.cockos.com/licecap/).
+
+## Notes
+
+This went way smoother for me in terms of understanding. I wish I got to play more with gesture for this assignment but I ended up doing more in the lab then for the homework which I was surprised about.
+
+
+## TweetTweet - Assignment 3 Submission
 Homework 3! Codepath Twitter Demo Client
 
 **TweetTweet App** is a prototype of the Twitter app using the [Twitter API](https://dev.twitter.com/overview/api).
@@ -33,6 +69,7 @@ The following **optional** features are implemented:
 - [x] Retweet and favorite count are formatted based on the count (i.e. 15k on the timeline view vs 15,821 on the detailed expansion, etc).
 - [x] When composing, you should have a countdown in the upper right for the tweet limit. (I did lower left since that's in the current mobile app)
 - [x] Replies should be prefixed with the username and the reply_id should be set when posting the tweet,
+- [x] Made my own icons (compose icon and cross exit) that used global tint to get the twitter blue color. 
 
 
 
@@ -40,7 +77,9 @@ The following **optional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-![Video Walkthrough](tweet.gif)
+![Video Walkthrough](tweet3.gif) ![Video Walkthrough](tweet.gif)
+
+I kept getting rate limited so I'm just gna show two of the walkthroughs. There were (alot of) updates and fixes since I recorded the one on the right but it's a good walkthrough and my later gifs don't have everything in it because it got hard with the rate limiting.  :/
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
@@ -56,6 +95,7 @@ I spent more time than anticipated trying to replace the original url with its r
 
 ## Questions
 
+What's the best way to refactor common code in ios?
 How do I make helper methods that an object's init class can use?
 How do I create like a global helper class that has methods I'd like to use across the project? 
 
