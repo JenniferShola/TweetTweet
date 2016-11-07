@@ -1,4 +1,42 @@
-# TweetTweet
+# TweetTweet - Assigment 4 Submission
+Homework 4! Codepath Twitter Redux Demo Client
+
+**TweetTweet App** is a prototype of the Twitter app using the [Twitter API](https://dev.twitter.com/overview/api).
+
+Time spent: **12** hours spent in total
+
+## User Stories
+
+The following **required** functionality is completed:
+
+- [x] Hamburger menu
+  - [x] Dragging anywhere in the view should reveal the menu.
+  - [x] The menu should include links to your profile, the home timeline, and the mentions view.
+
+- [x] Profile page
+  - [x] Contains the user header view
+  - [x] Contains a section with the users basic stats: # tweets, # following, # followers
+  - [x] Shows the user timeline
+
+- [x] Home Timeline
+  - [x] Tapping on a user image should bring up that user's profile page
+
+## Video Walkthrough 
+
+Here's a walkthrough of implemented user stories:
+
+![Video Walkthrough](redux.gif) ![Video Walkthrough](tweet.gif)
+
+I kept getting rate limited so I'm just gna show two of the walkthroughs. There were (alot of) updates and fixes since I recorded the one on the right but it's a good walkthrough and my later gifs don't have everything in it because it got hard with the rate limiting.  :/
+
+GIF created with [LiceCap](http://www.cockos.com/licecap/).
+
+## Notes
+
+This went way smoother for me in terms of understanding. I wish I got to play more with gesture for this assignment but I ended up doing more in the lab then for the homework which I was surprised about.
+
+
+## TweetTweet - Assignment 3 Submission
 Homework 3! Codepath Twitter Demo Client
 
 **TweetTweet App** is a prototype of the Twitter app using the [Twitter API](https://dev.twitter.com/overview/api).
