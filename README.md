@@ -25,7 +25,7 @@ The following **required** functionality is completed:
 
 Here's a walkthrough of implemented user stories:
 
-![Video Walkthrough](redux.gif) ![Video Walkthrough](tweet.gif)
+![Video Walkthrough](redux.gif)
 
 I kept getting rate limited so I'm just gna show two of the walkthroughs. There were (alot of) updates and fixes since I recorded the one on the right but it's a good walkthrough and my later gifs don't have everything in it because it got hard with the rate limiting.  :/
 
