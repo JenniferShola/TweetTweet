@@ -27,7 +27,7 @@ Here's a walkthrough of implemented user stories:
 
 ![Video Walkthrough](redux.gif)
 
-I kept getting rate limited so I'm just gna show two of the walkthroughs. There were (alot of) updates and fixes since I recorded the one on the right but it's a good walkthrough and my later gifs don't have everything in it because it got hard with the rate limiting.  :/
+I kept getting rate limited so I'm showing two walkthroughs above. There were many updates and fixes to the app since I recorded the one on the right but it's a good walkthrough and my later gifs don't have everything in it due to the rate limiting.  :/
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
@@ -79,17 +79,17 @@ Here's a walkthrough of implemented user stories:
 
 ![Video Walkthrough](tweet3.gif) ![Video Walkthrough](tweet.gif)
 
-I kept getting rate limited so I'm just gna show two of the walkthroughs. There were (alot of) updates and fixes since I recorded the one on the right but it's a good walkthrough and my later gifs don't have everything in it because it got hard with the rate limiting.  :/
+I kept getting rate limited so I'm showing two walkthroughs. There were many updates and fixes since I recorded the one on the right but it's a good walkthrough and my later gifs don't have everything in it due to the rate limiting.  :/
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-This went way smoother for me in terms of development. It took me quite some time to get through the OAuth videos. I initiually had a few misunderstandings about how that fit together and how to probably set up my accessToken but I feel like I really learned iOS this week. Before, I kinda understood what was going on but this week, I felt more in control of what I was working on and I constantly refactored.  
+This went smoother for me in terms of development. It took me quite some time to get through the OAuth videos and while I initually had a few misunderstandings about how to set up my accessToken, I feel like I learned iOS this week. Before, I sort of understood what was going on but this week, I felt more in control of what I was working on and I constantly refactored and improved as I worked.  
 
 I also initially had trouble with completions. My autocomplete has been pretty finicky in xcode so understanding the syntax and trying to make it work, soaked up more time than it should.
 
-I did have some ininital difficulty with how to understand hiding and showing the Name Retweeted at the top if a retweet in combination with AutoLayout. I ended up having to redo my layout with StackView multiple times, first solely with Autolayout, then Stack View and Autolayout, then finally with nested views inside of a Stack View.
+I did have some initial difficulty with how to understand hiding and showing the Name Retweeted at the top if a retweet in combination with AutoLayout. I ended up having to redo my layout with StackView multiple times, first solely with Autolayout, then Stack View and Autolayout, then finally with nested views inside of a Stack View.
 
 I spent more time than anticipated trying to replace the original url with its readable format and then coloring it in. I ended up reordering some of the steps but I spent more time then I originally expected given that user_mentions and hashtags were a similar concept I finished before implementing this.
 
