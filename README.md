@@ -27,8 +27,6 @@ Here's a walkthrough of implemented user stories:
 
 ![Video Walkthrough](redux.gif)
 
-I kept getting rate limited so I'm showing two walkthroughs above. There were many updates and fixes to the app since I recorded the one on the right but it's a good walkthrough and my later gifs don't have everything in it due to the rate limiting.  :/
-
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
